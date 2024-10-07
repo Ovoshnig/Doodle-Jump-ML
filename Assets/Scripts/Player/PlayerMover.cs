@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 
 [RequireComponent(typeof(SpriteRenderer))]
 [RequireComponent(typeof(Rigidbody2D))]
@@ -13,11 +14,19 @@ public class PlayerMover : MonoBehaviour
     private SpriteRenderer _spriteRenderer;
     private Rigidbody2D _rigidbody;
     private float _horizontalInput = 0f;
+    private float _maxReachedHeight;
+
+    public event Action<float> OnNewPlatformReached;
 
     private void Awake()
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _rigidbody = GetComponent<Rigidbody2D>();
+    }
+
+    private void Start()
+    {
+        _maxReachedHeight = transform.position.y;
     }
 
     private void Update()
@@ -42,8 +51,17 @@ public class PlayerMover : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.TryGetComponent<Platform>(out _) 
+        if (collision.gameObject.TryGetComponent<Platform>(out _)
             && _rigidbody.linearVelocityY <= 0f)
+        {
             _rigidbody.AddForceY(_jumpForce, ForceMode2D.Impulse);
+            float platformHeight = collision.transform.position.y;
+
+            if (platformHeight > _maxReachedHeight)
+            {
+                _maxReachedHeight = platformHeight;
+                OnNewPlatformReached?.Invoke(_maxReachedHeight);
+            }
+        }
     }
 }

@@ -178,3 +178,5 @@ MonoBehaviour:
   _jumpForce: 7
   _horizontalSpeed: 4
   _maxVelocityMagnitude: 5
+  _cameraVerticalOffset: -2
+  _cameraTransform: {fileID: 0}
