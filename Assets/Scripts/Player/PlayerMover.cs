@@ -24,10 +24,7 @@ public class PlayerMover : MonoBehaviour
         _rigidbody = GetComponent<Rigidbody2D>();
     }
 
-    private void Start()
-    {
-        _maxReachedHeight = transform.position.y;
-    }
+    private void Start() => _maxReachedHeight = transform.position.y;
 
     private void Update()
     {
