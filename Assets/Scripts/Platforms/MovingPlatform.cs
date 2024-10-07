@@ -14,7 +14,7 @@ public class MovingPlatform : Platform
 
     private void Start()
     {
-        _colliderWidth = _collider.size.x / 2;
+        _colliderWidth = (_collider.size * transform.lossyScale).x / 2;
         _direction = Random.Range(0, 2) == 0 ? -1 : 1;
         screenBoundPositionX = Camera.main.orthographicSize * Screen.width / Screen.height;
     }
