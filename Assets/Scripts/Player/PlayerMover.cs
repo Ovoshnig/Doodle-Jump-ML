@@ -60,11 +60,11 @@ public class PlayerMover : MonoBehaviour
             && _rigidbody.linearVelocityY <= 0f)
         {
             _rigidbody.AddForceY(_jumpForce, ForceMode2D.Impulse);
-            float platformHeight = collision.transform.position.y;
+            float platformPositionY = collision.transform.position.y;
 
-            if (platformHeight > _maxReachedHeight)
+            if (platformPositionY > _maxReachedHeight)
             {
-                _maxReachedHeight = platformHeight;
+                _maxReachedHeight = platformPositionY;
                 OnNewPlatformReached?.Invoke(_maxReachedHeight);
             }
         }
