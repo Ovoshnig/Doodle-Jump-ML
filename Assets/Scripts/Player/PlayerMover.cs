@@ -14,7 +14,7 @@ public class PlayerMover : MonoBehaviour
     private SpriteRenderer _spriteRenderer;
     private Rigidbody2D _rigidbody;
     private float _horizontalInput = 0f;
-    private float _maxReachedHeight;
+    private float _maxReachedHeight = 0f;
 
     public event Action PlatformJumpedOff;
     public event Action<float> NewPlatformReached;
@@ -25,11 +25,7 @@ public class PlayerMover : MonoBehaviour
         _rigidbody = GetComponent<Rigidbody2D>();
     }
 
-    private void Start()
-    {
-        _maxReachedHeight = transform.position.y;
-        NewPlatformReached?.Invoke(_maxReachedHeight);
-    }
+    private void Start() => NewPlatformReached?.Invoke(_maxReachedHeight);
 
     private void Update()
     {
