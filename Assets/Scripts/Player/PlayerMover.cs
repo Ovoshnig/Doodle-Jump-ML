@@ -13,19 +13,29 @@ public class PlayerMover : MonoBehaviour
 
     private SpriteRenderer _spriteRenderer;
     private Rigidbody2D _rigidbody;
+    private Camera _mainCamera;
+    private Transform _cameraTransform;
     private float _horizontalInput = 0f;
     private float _maxReachedHeight = 0f;
+    private float _screenBoundPositionY;
 
     public event Action PlatformJumpedOff;
     public event Action<float> NewPlatformReached;
+    public event Action Lost;
 
     private void Awake()
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _rigidbody = GetComponent<Rigidbody2D>();
+        _mainCamera = Camera.main;
+        _cameraTransform = _mainCamera.transform;
     }
 
-    private void Start() => NewPlatformReached?.Invoke(_maxReachedHeight);
+    private void Start()
+    {
+        NewPlatformReached?.Invoke(_maxReachedHeight);
+        _screenBoundPositionY = _mainCamera.orthographicSize;
+    }
 
     private void Update()
     {
@@ -43,6 +53,9 @@ public class PlayerMover : MonoBehaviour
             position.x = -Mathf.Sign(position.x) * 2.69f;
             transform.position = position;
         }
+
+        if (position.y < _cameraTransform.position.y - _screenBoundPositionY)
+            Lost?.Invoke();
     }
 
     private void FixedUpdate()
