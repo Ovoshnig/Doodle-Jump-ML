@@ -311,6 +311,7 @@ GameObject:
   - component: {fileID: 519420031}
   - component: {fileID: 519420029}
   - component: {fileID: 519420033}
+  - component: {fileID: 519420034}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -407,6 +408,19 @@ MonoBehaviour:
   _playerMover: {fileID: 2007441224}
   _cameraVerticalOffset: -2
   _cameraMoveSpeed: 4
+--- !u!114 &519420034
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519420028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 195de6c0bc6aa9544aaeae91519fc7e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _volume: 0.618
 --- !u!1 &1048030700
 GameObject:
   m_ObjectHideFlags: 0
@@ -541,7 +555,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2193142091735979570, guid: e9be103f2c3befc4e8e703327c94cfae, type: 3}
       propertyPath: m_Name
-      value: Doodle
+      value: Doodler
       objectReference: {fileID: 0}
     - target: {fileID: 2679159531476124905, guid: e9be103f2c3befc4e8e703327c94cfae, type: 3}
       propertyPath: m_LocalPosition.x

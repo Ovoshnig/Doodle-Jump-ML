@@ -16,6 +16,7 @@ public class PlayerMover : MonoBehaviour
     private float _horizontalInput = 0f;
     private float _maxReachedHeight;
 
+    public event Action PlatformJumpedOff;
     public event Action<float> NewPlatformReached;
 
     private void Awake()
@@ -71,6 +72,8 @@ public class PlayerMover : MonoBehaviour
                 _maxReachedHeight = platformPositionY;
                 NewPlatformReached?.Invoke(_maxReachedHeight);
             }
+
+            PlatformJumpedOff?.Invoke();
         }
     }
 }
