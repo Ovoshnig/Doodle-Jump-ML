@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 [RequireComponent(typeof(AudioSource))]
@@ -6,6 +5,7 @@ public class SFXPlayer : MonoBehaviour
 {
     [SerializeField] private AudioClip _jumpClip;
     [SerializeField] private AudioClip _loseClip;
+    [SerializeField] private AudioClip _monsterDownClip;
     
     private AudioSource _audioSource;
     private PlayerMover _playerMover;
@@ -17,12 +17,15 @@ public class SFXPlayer : MonoBehaviour
 
         _playerMover.PlatformJumpedOff += OnPlatformJumpedOff;
         _playerMover.Lost += OnLost;
+        _playerMover.MonsterDowned += OnMonsterDowned;
     }
+
 
     private void OnDestroy()
     {
         _playerMover.PlatformJumpedOff -= OnPlatformJumpedOff;
         _playerMover.Lost -= OnLost;
+        _playerMover.MonsterDowned -= OnMonsterDowned;
     }
 
     private void OnPlatformJumpedOff()
@@ -34,6 +37,12 @@ public class SFXPlayer : MonoBehaviour
     private void OnLost()
     {
         _audioSource.clip = _loseClip;
+        _audioSource.Play();
+    }
+
+    private void OnMonsterDowned()
+    {
+        _audioSource.clip = _monsterDownClip;
         _audioSource.Play();
     }
 }

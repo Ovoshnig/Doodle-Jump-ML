@@ -25,7 +25,7 @@ public class PlatformPlacer : MonoBehaviour
     {
         _mainCamera = Camera.main;
         _playerMover = _player.GetComponent<PlayerMover>();
-        _playerMover.NewPlatformReached += OnNewPlatformReached;
+        _playerMover.NewHeightReached += OnNewPlatformReached;
     }
 
     private void Start()
@@ -52,7 +52,7 @@ public class PlatformPlacer : MonoBehaviour
         GenerateInitialPlatforms();
     }
 
-    private void OnDestroy() => _playerMover.NewPlatformReached -= OnNewPlatformReached;
+    private void OnDestroy() => _playerMover.NewHeightReached -= OnNewPlatformReached;
 
     private GameObject CreateNormalPlatform() => Instantiate(_normalPlatformPrefab);
 

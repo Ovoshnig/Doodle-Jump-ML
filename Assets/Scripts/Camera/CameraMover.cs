@@ -13,9 +13,9 @@ public class CameraMover : MonoBehaviour
 
     private void Awake() => _mainCamera = transform.GetComponent<Camera>();
 
-    private void OnEnable() => _playerMover.NewPlatformReached += OnNewPlatformReached;
+    private void OnEnable() => _playerMover.NewHeightReached += OnNewPlatformReached;
 
-    private void OnDisable() => _playerMover.NewPlatformReached -= OnNewPlatformReached;
+    private void OnDisable() => _playerMover.NewHeightReached -= OnNewPlatformReached;
 
     private void OnNewPlatformReached(float newHeight)
     {

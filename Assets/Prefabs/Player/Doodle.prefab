@@ -15,9 +15,9 @@ GameObject:
   - component: {fileID: 4946911657120307609}
   - component: {fileID: -8429920006234170566}
   - component: {fileID: 4854572935135823801}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Doodle
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -130,7 +130,7 @@ BoxCollider2D:
   m_Offset: {x: 0.17655748, y: -0.68913084}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0.6533561, y: 0.45929822}
     oldSize: {x: 1.52, y: 1.48}
     newSize: {x: 1.52, y: 1.48}
     adaptiveTilingThreshold: 0.5
@@ -292,6 +292,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _jumpClip: {fileID: 8300000, guid: f0b4239bc51629b42b1d1b9dc23cedd5, type: 3}
   _loseClip: {fileID: 8300000, guid: 834ee060a64a767469d845b8d01f7bee, type: 3}
+  _monsterDownClip: {fileID: 8300000, guid: 4f2e5a33faa31584a8991f0e672e9c38, type: 3}
 --- !u!1 &4099047470815077112
 GameObject:
   m_ObjectHideFlags: 0
@@ -303,7 +304,7 @@ GameObject:
   - component: {fileID: 8836269644035179595}
   - component: {fileID: 2262877928134851272}
   - component: {fileID: 1151046158460759096}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}

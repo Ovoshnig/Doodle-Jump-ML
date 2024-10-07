@@ -23,8 +23,9 @@ public class PlayerMover : MonoBehaviour
     private float _screenBoundPositionY;
 
     public event Action PlatformJumpedOff;
-    public event Action<float> NewPlatformReached;
+    public event Action<float> NewHeightReached;
     public event Action Lost;
+    public event Action MonsterDowned;
 
     private void Awake()
     {
@@ -39,10 +40,9 @@ public class PlayerMover : MonoBehaviour
         _cameraTransform = _mainCamera.transform;
     }
 
-
     private void Start()
     {
-        NewPlatformReached?.Invoke(_maxReachedHeight);
+        NewHeightReached?.Invoke(_maxReachedHeight);
         _screenBoundPositionY = _mainCamera.orthographicSize;
     }
 
@@ -81,23 +81,34 @@ public class PlayerMover : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.TryGetComponent<Platform>(out _)
-            && _rigidbody.linearVelocityY <= 0f)
+        if (_rigidbody.linearVelocityY <= 0f)
         {
-            _rigidbody.AddForceY(_jumpForce, ForceMode2D.Impulse);
-            float platformPositionY = collision.transform.position.y;
-
-            if (platformPositionY > _maxReachedHeight)
+            if (collision.gameObject.TryGetComponent<Platform>(out _))
             {
-                _maxReachedHeight = platformPositionY;
-                NewPlatformReached?.Invoke(_maxReachedHeight);
+                Jump(collision.transform);
+                PlatformJumpedOff?.Invoke();
             }
-
-            PlatformJumpedOff?.Invoke();
+            else if (collision.gameObject.TryGetComponent<Monster>(out _))
+            {
+                Jump(collision.transform);
+                MonsterDowned?.Invoke();
+            }
         }
     }
 
     private void OnWithMonsterCollided() => Lose();
+
+    private void Jump(Transform collisionTransform)
+    {
+        _rigidbody.AddForceY(_jumpForce, ForceMode2D.Impulse);
+        float collisionPositionY = collisionTransform.position.y;
+
+        if (collisionPositionY > _maxReachedHeight)
+        {
+            _maxReachedHeight = collisionPositionY;
+            NewHeightReached?.Invoke(_maxReachedHeight);
+        }
+    }
 
     private void Lose()
     {

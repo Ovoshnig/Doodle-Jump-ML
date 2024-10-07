@@ -12,10 +12,10 @@ public class ScoreDisplay : MonoBehaviour
     {
         _text = GetComponent<TMP_Text>();
 
-        _playerMover.NewPlatformReached += OnNewPlatformReached;
+        _playerMover.NewHeightReached += OnNewPlatformReached;
     }
 
-    private void OnDestroy() => _playerMover.NewPlatformReached -= OnNewPlatformReached;
+    private void OnDestroy() => _playerMover.NewHeightReached -= OnNewPlatformReached;
 
     private void OnNewPlatformReached(float newHeight) => _text.text = "Score: " + (int)newHeight;
 }
