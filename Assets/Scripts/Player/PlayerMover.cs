@@ -16,7 +16,7 @@ public class PlayerMover : MonoBehaviour
     private float _horizontalInput = 0f;
     private float _maxReachedHeight;
 
-    public event Action<float> OnNewPlatformReached;
+    public event Action<float> NewPlatformReached;
 
     private void Awake()
     {
@@ -24,7 +24,11 @@ public class PlayerMover : MonoBehaviour
         _rigidbody = GetComponent<Rigidbody2D>();
     }
 
-    private void Start() => _maxReachedHeight = transform.position.y;
+    private void Start()
+    {
+        _maxReachedHeight = transform.position.y;
+        NewPlatformReached?.Invoke(_maxReachedHeight);
+    }
 
     private void Update()
     {
@@ -65,7 +69,7 @@ public class PlayerMover : MonoBehaviour
             if (platformPositionY > _maxReachedHeight)
             {
                 _maxReachedHeight = platformPositionY;
-                OnNewPlatformReached?.Invoke(_maxReachedHeight);
+                NewPlatformReached?.Invoke(_maxReachedHeight);
             }
         }
     }

@@ -7,7 +7,7 @@ public class MovingPlatform : Platform
 
     private BoxCollider2D _collider;
     private float _colliderWidth; 
-    private float screenBoundPositionX;
+    private float _screenBoundPositionX;
     private int _direction;
 
     private void Awake() => _collider = GetComponent<BoxCollider2D>();
@@ -16,7 +16,7 @@ public class MovingPlatform : Platform
     {
         _colliderWidth = (_collider.size * transform.lossyScale).x / 2;
         _direction = Random.Range(0, 2) == 0 ? -1 : 1;
-        screenBoundPositionX = Camera.main.orthographicSize * Screen.width / Screen.height;
+        _screenBoundPositionX = Camera.main.orthographicSize * Screen.width / Screen.height;
     }
 
     private void Update()
@@ -24,7 +24,7 @@ public class MovingPlatform : Platform
         transform.Translate(new Vector2(_speed * _direction * Time.deltaTime, 0f));
         float positionX = transform.position.x;
 
-        if (Mathf.Abs(positionX) + _colliderWidth > screenBoundPositionX)
+        if (Mathf.Abs(positionX) + _colliderWidth > _screenBoundPositionX)
             _direction = -_direction;
     }
 }
