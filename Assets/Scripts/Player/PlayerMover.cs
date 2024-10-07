@@ -34,6 +34,14 @@ public class PlayerMover : MonoBehaviour
             _spriteRenderer.flipX = true;
         else if (_horizontalInput < 0f && _spriteRenderer.flipX)
             _spriteRenderer.flipX = false;
+
+        Vector2 position = transform.position;
+        
+        if (Mathf.Abs(position.x) > 2.7f)
+        {
+            position.x = -Mathf.Sign(position.x) * 2.69f;
+            transform.position = position;
+        }
     }
 
     private void FixedUpdate()
