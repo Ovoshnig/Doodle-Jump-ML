@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(SpriteRenderer))]
-public abstract class PlayerBooster : MonoBehaviour
+public abstract class PlayerBoosterView : MonoBehaviour
 {
     private SpriteRenderer _spriteRenderer;
 

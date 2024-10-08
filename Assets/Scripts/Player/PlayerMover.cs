@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using System.Collections;
 
 [RequireComponent(typeof(SpriteRenderer))]
 [RequireComponent(typeof(Rigidbody2D))]
@@ -19,6 +20,8 @@ public class PlayerMover : MonoBehaviour
     private PlayerLegs _playerLegs;
     private PlayerPropeller _playerPropeller;
     private PlayerJetpack _playerJetpack;
+    private PlayerPropellerView _playerPropellerView;
+    private PlayerJetpackView _playerJetpackView;
     private float _horizontalInput = 0f;
     private float _maxReachedHeight = 0f;
 
@@ -37,6 +40,8 @@ public class PlayerMover : MonoBehaviour
         _playerLegs = GetComponentInChildren<PlayerLegs>();
         _playerPropeller = GetComponentInChildren<PlayerPropeller>();
         _playerJetpack = GetComponentInChildren<PlayerJetpack>();
+        _playerPropellerView = GetComponentInChildren<PlayerPropellerView>();
+        _playerJetpackView = GetComponentInChildren<PlayerJetpackView>();
 
         _playerBody.Collided += OnBodyCollided;
         _playerBody.Triggered += OnBodyTriggered;
@@ -61,14 +66,14 @@ public class PlayerMover : MonoBehaviour
         if (_horizontalInput > 0f && !_spriteRenderer.flipX)
         {
             _spriteRenderer.flipX = true;
-            _playerPropeller.Flip(true);
-            _playerJetpack.Flip(true);
+            _playerPropellerView.Flip(true);
+            _playerJetpackView.Flip(true);
         }
         else if (_horizontalInput < 0f && _spriteRenderer.flipX)
         {
             _spriteRenderer.flipX = false;
-            _playerPropeller.Flip(false);
-            _playerJetpack.Flip(false);
+            _playerPropellerView.Flip(false);
+            _playerJetpackView.Flip(false);
         }
 
         Vector2 position = transform.position;
@@ -148,11 +153,15 @@ public class PlayerMover : MonoBehaviour
     {
         if (booster is Propeller)
         {
-            _playerPropeller.Enable();
+            _playerPropellerView.Enable();
+            _playerPropeller.Run();
+            StartCoroutine(BoostRoutine(_playerPropeller, _playerPropellerView));
         }
         else if (booster is Jetpack)
         {
-            _playerJetpack.Enable();
+            _playerJetpackView.Enable();
+            _playerJetpack.Run();
+            StartCoroutine(BoostRoutine(_playerJetpack, _playerJetpackView));
         }
     }
 
@@ -162,5 +171,18 @@ public class PlayerMover : MonoBehaviour
         _legsCollider.enabled = false;
         _rigidbody.linearVelocityY = 0f;
         Lost?.Invoke();
+    }
+
+    private IEnumerator BoostRoutine(PlayerBooster playerBooster, PlayerBoosterView playerBoosterView)
+    {
+        while (playerBooster.IsRunning)
+        {
+            NewHeightReached(transform.position.y);
+
+            yield return null;
+        }
+
+        playerBoosterView.Disable();
+        Jump(transform);
     }
 }
