@@ -17,6 +17,8 @@ public class PlayerMover : MonoBehaviour
     private Collider2D _legsCollider;
     private PlayerBody _playerBody;
     private PlayerLegs _playerLegs;
+    private PlayerPropeller _playerPropeller;
+    private PlayerJetpack _playerJetpack;
     private float _horizontalInput = 0f;
     private float _maxReachedHeight = 0f;
 
@@ -33,9 +35,13 @@ public class PlayerMover : MonoBehaviour
         _legsCollider = GetComponentInChildren<BoxCollider2D>();
         _playerBody = GetComponentInChildren<PlayerBody>();
         _playerLegs = GetComponentInChildren<PlayerLegs>();
+        _playerPropeller = GetComponentInChildren<PlayerPropeller>();
+        _playerJetpack = GetComponentInChildren<PlayerJetpack>();
 
         _playerBody.Collided += OnBodyCollided;
+        _playerBody.Triggered += OnBodyTriggered;
         _playerLegs.Collided += OnLegsCollided;
+        _playerLegs.Triggered += OnLegsTriggered;
     }
 
     private void Start() => NewHeightReached?.Invoke(_maxReachedHeight);
@@ -43,7 +49,9 @@ public class PlayerMover : MonoBehaviour
     private void OnDestroy()
     {
         _playerBody.Collided -= OnBodyCollided;
+        _playerBody.Triggered -= OnBodyTriggered;
         _playerLegs.Collided -= OnLegsCollided;
+        _playerLegs.Triggered -= OnLegsTriggered;
     }
 
     private void Update()
@@ -51,9 +59,17 @@ public class PlayerMover : MonoBehaviour
         _horizontalInput = Input.GetAxis(HorizontalAxisName);
 
         if (_horizontalInput > 0f && !_spriteRenderer.flipX)
+        {
             _spriteRenderer.flipX = true;
+            _playerPropeller.Flip(true);
+            _playerJetpack.Flip(true);
+        }
         else if (_horizontalInput < 0f && _spriteRenderer.flipX)
+        {
             _spriteRenderer.flipX = false;
+            _playerPropeller.Flip(false);
+            _playerJetpack.Flip(false);
+        }
 
         Vector2 position = transform.position;
 
@@ -103,6 +119,19 @@ public class PlayerMover : MonoBehaviour
         if (collision.collider.TryGetComponent<Hole>(out _))
             Lose();
     }
+
+    private void OnBodyTriggered(Collider2D collider)
+    {
+        if (collider.TryGetComponent(out Booster booster))
+            Boost(booster);
+    }
+
+    private void OnLegsTriggered(Collider2D collider)
+    {
+        if (collider.TryGetComponent(out Booster booster))
+            Boost(booster);
+    }
+
     private void Jump(Transform collisionTransform)
     {
         _rigidbody.AddForceY(_jumpForce, ForceMode2D.Impulse);
@@ -112,6 +141,18 @@ public class PlayerMover : MonoBehaviour
         {
             _maxReachedHeight = collisionPositionY;
             NewHeightReached?.Invoke(_maxReachedHeight);
+        }
+    }
+
+    private void Boost(Booster booster)
+    {
+        if (booster is Propeller)
+        {
+            _playerPropeller.Enable();
+        }
+        else if (booster is Jetpack)
+        {
+            _playerJetpack.Enable();
         }
     }
 
