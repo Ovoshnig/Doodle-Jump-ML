@@ -36,8 +36,11 @@ public class SFXPlayer : MonoBehaviour
 
     private void OnLost()
     {
-        _audioSource.clip = _loseClip;
-        _audioSource.Play();
+        if (_audioSource.clip != _loseClip)
+        {
+            _audioSource.clip = _loseClip;
+            _audioSource.Play();
+        }
     }
 
     private void OnMonsterDowned()

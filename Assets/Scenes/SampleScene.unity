@@ -118,6 +118,63 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1001 &205820603
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3811306090100936480, guid: 9b036bf0708dcf84688ca5301516fe84, type: 3}
+      propertyPath: m_Name
+      value: Flying Monster (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7445114476488546320, guid: 9b036bf0708dcf84688ca5301516fe84, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7445114476488546320, guid: 9b036bf0708dcf84688ca5301516fe84, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 12.49
+      objectReference: {fileID: 0}
+    - target: {fileID: 7445114476488546320, guid: 9b036bf0708dcf84688ca5301516fe84, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7445114476488546320, guid: 9b036bf0708dcf84688ca5301516fe84, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7445114476488546320, guid: 9b036bf0708dcf84688ca5301516fe84, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7445114476488546320, guid: 9b036bf0708dcf84688ca5301516fe84, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7445114476488546320, guid: 9b036bf0708dcf84688ca5301516fe84, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7445114476488546320, guid: 9b036bf0708dcf84688ca5301516fe84, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7445114476488546320, guid: 9b036bf0708dcf84688ca5301516fe84, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7445114476488546320, guid: 9b036bf0708dcf84688ca5301516fe84, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 9b036bf0708dcf84688ca5301516fe84, type: 3}
 --- !u!1 &292501794
 GameObject:
   m_ObjectHideFlags: 0
@@ -421,63 +478,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _volume: 0.618
---- !u!1001 &682551296
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 3811306090100936480, guid: 9b036bf0708dcf84688ca5301516fe84, type: 3}
-      propertyPath: m_Name
-      value: Flying Monster (1)
-      objectReference: {fileID: 0}
-    - target: {fileID: 7445114476488546320, guid: 9b036bf0708dcf84688ca5301516fe84, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 1.504096
-      objectReference: {fileID: 0}
-    - target: {fileID: 7445114476488546320, guid: 9b036bf0708dcf84688ca5301516fe84, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 10.368928
-      objectReference: {fileID: 0}
-    - target: {fileID: 7445114476488546320, guid: 9b036bf0708dcf84688ca5301516fe84, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7445114476488546320, guid: 9b036bf0708dcf84688ca5301516fe84, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7445114476488546320, guid: 9b036bf0708dcf84688ca5301516fe84, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7445114476488546320, guid: 9b036bf0708dcf84688ca5301516fe84, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7445114476488546320, guid: 9b036bf0708dcf84688ca5301516fe84, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7445114476488546320, guid: 9b036bf0708dcf84688ca5301516fe84, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7445114476488546320, guid: 9b036bf0708dcf84688ca5301516fe84, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7445114476488546320, guid: 9b036bf0708dcf84688ca5301516fe84, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 9b036bf0708dcf84688ca5301516fe84, type: 3}
 --- !u!1001 &884187984
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -492,11 +492,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7445114476488546320, guid: 9b036bf0708dcf84688ca5301516fe84, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.2749984
+      value: 1.8
       objectReference: {fileID: 0}
     - target: {fileID: 7445114476488546320, guid: 9b036bf0708dcf84688ca5301516fe84, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 6.260701
+      value: 4.34
       objectReference: {fileID: 0}
     - target: {fileID: 7445114476488546320, guid: 9b036bf0708dcf84688ca5301516fe84, type: 3}
       propertyPath: m_LocalPosition.z
@@ -637,6 +637,63 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!1001 &913829512
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3811306090100936480, guid: 9b036bf0708dcf84688ca5301516fe84, type: 3}
+      propertyPath: m_Name
+      value: Flying Monster (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7445114476488546320, guid: 9b036bf0708dcf84688ca5301516fe84, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1.14
+      objectReference: {fileID: 0}
+    - target: {fileID: 7445114476488546320, guid: 9b036bf0708dcf84688ca5301516fe84, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 8.64
+      objectReference: {fileID: 0}
+    - target: {fileID: 7445114476488546320, guid: 9b036bf0708dcf84688ca5301516fe84, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7445114476488546320, guid: 9b036bf0708dcf84688ca5301516fe84, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7445114476488546320, guid: 9b036bf0708dcf84688ca5301516fe84, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7445114476488546320, guid: 9b036bf0708dcf84688ca5301516fe84, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7445114476488546320, guid: 9b036bf0708dcf84688ca5301516fe84, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7445114476488546320, guid: 9b036bf0708dcf84688ca5301516fe84, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7445114476488546320, guid: 9b036bf0708dcf84688ca5301516fe84, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7445114476488546320, guid: 9b036bf0708dcf84688ca5301516fe84, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 9b036bf0708dcf84688ca5301516fe84, type: 3}
 --- !u!1 &951301052
 GameObject:
   m_ObjectHideFlags: 0
@@ -995,4 +1052,5 @@ SceneRoots:
   - {fileID: 1767775507}
   - {fileID: 351690889}
   - {fileID: 884187984}
-  - {fileID: 682551296}
+  - {fileID: 913829512}
+  - {fileID: 205820603}

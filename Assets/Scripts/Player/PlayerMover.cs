@@ -2,7 +2,6 @@ using UnityEngine;
 using System;
 
 [RequireComponent(typeof(SpriteRenderer))]
-[RequireComponent(typeof(Collider2D))]
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerMover : MonoBehaviour
 {
@@ -13,14 +12,13 @@ public class PlayerMover : MonoBehaviour
     [SerializeField, Min(0f)] private float _maxVelocityMagnitude = 1f;
 
     private SpriteRenderer _spriteRenderer;
-    private Collider2D _collider;
     private Rigidbody2D _rigidbody;
+    private Collider2D _bodyCollider;
+    private Collider2D _legsCollider;
     private PlayerBody _playerBody;
-    private Camera _mainCamera;
-    private Transform _cameraTransform;
+    private PlayerLegs _playerLegs;
     private float _horizontalInput = 0f;
     private float _maxReachedHeight = 0f;
-    private float _screenBoundPositionY;
 
     public event Action PlatformJumpedOff;
     public event Action<float> NewHeightReached;
@@ -30,23 +28,25 @@ public class PlayerMover : MonoBehaviour
     private void Awake()
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
-        _collider = GetComponent<Collider2D>();
         _rigidbody = GetComponent<Rigidbody2D>();
+        _bodyCollider = GetComponentInChildren<CapsuleCollider2D>();
+        _legsCollider = GetComponentInChildren<BoxCollider2D>();
         _playerBody = GetComponentInChildren<PlayerBody>();
+        _playerLegs = GetComponentInChildren<PlayerLegs>();
 
-        _playerBody.WithMonsterCollided += OnWithMonsterCollided;
-
-        _mainCamera = Camera.main;
-        _cameraTransform = _mainCamera.transform;
+        _playerBody.CollidedWithMonster += OnBodyCollidedWithMonster;
+        _playerLegs.CollidedWithPlatform += OnLegsCollidedWithPlatform;
+        _playerLegs.CollidedWithMonster += OnLegsCollidedWithMonster;
     }
 
-    private void Start()
+    private void Start() => NewHeightReached?.Invoke(_maxReachedHeight);
+
+    private void OnDestroy()
     {
-        NewHeightReached?.Invoke(_maxReachedHeight);
-        _screenBoundPositionY = _mainCamera.orthographicSize;
+        _playerBody.CollidedWithMonster -= OnBodyCollidedWithMonster;
+        _playerLegs.CollidedWithPlatform -= OnLegsCollidedWithPlatform;
+        _playerLegs.CollidedWithMonster -= OnLegsCollidedWithMonster;
     }
-
-    private void OnDestroy() => _playerBody.WithMonsterCollided -= OnWithMonsterCollided;
 
     private void Update()
     {
@@ -64,9 +64,6 @@ public class PlayerMover : MonoBehaviour
             position.x = -Mathf.Sign(position.x) * 2.69f;
             transform.position = position;
         }
-
-        if (position.y < _cameraTransform.position.y - _screenBoundPositionY)
-            Lose();
     }
 
     private void FixedUpdate()
@@ -79,24 +76,27 @@ public class PlayerMover : MonoBehaviour
         _rigidbody.linearVelocityX = Vector2.ClampMagnitude(_rigidbody.linearVelocity, _maxVelocityMagnitude).x;
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnBecameInvisible() => Lose();
+
+    private void OnBodyCollidedWithMonster() => Lose();
+
+    private void OnLegsCollidedWithMonster(Transform monsterTransform)
     {
         if (_rigidbody.linearVelocityY <= 0f)
         {
-            if (collision.gameObject.TryGetComponent<Platform>(out _))
-            {
-                Jump(collision.transform);
-                PlatformJumpedOff?.Invoke();
-            }
-            else if (collision.gameObject.TryGetComponent<Monster>(out _))
-            {
-                Jump(collision.transform);
-                MonsterDowned?.Invoke();
-            }
+            Jump(monsterTransform);
+            MonsterDowned?.Invoke();
         }
     }
 
-    private void OnWithMonsterCollided() => Lose();
+    private void OnLegsCollidedWithPlatform(Transform platformTransform)
+    {
+        if (_rigidbody.linearVelocityY <= 0f)
+        {
+            Jump(platformTransform);
+            PlatformJumpedOff?.Invoke();
+        }
+    }
 
     private void Jump(Transform collisionTransform)
     {
@@ -112,7 +112,9 @@ public class PlayerMover : MonoBehaviour
 
     private void Lose()
     {
-        _collider.enabled = false;
+        _bodyCollider.enabled = false;
+        _legsCollider.enabled = false;
+        _rigidbody.linearVelocityY = 0f;
         Lost?.Invoke();
     }
 }
