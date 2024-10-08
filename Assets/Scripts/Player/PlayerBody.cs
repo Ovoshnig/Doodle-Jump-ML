@@ -4,11 +4,7 @@ using UnityEngine;
 [RequireComponent(typeof(Collider2D))]
 public class PlayerBody : MonoBehaviour
 {
-    public event Action CollidedWithMonster;
+    public event Action<Collision2D> Collided;
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.collider.TryGetComponent<Monster>(out _))
-            CollidedWithMonster?.Invoke();
-    }
+    private void OnCollisionEnter2D(Collision2D collision) => Collided?.Invoke(collision);
 }

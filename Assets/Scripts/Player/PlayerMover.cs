@@ -34,18 +34,16 @@ public class PlayerMover : MonoBehaviour
         _playerBody = GetComponentInChildren<PlayerBody>();
         _playerLegs = GetComponentInChildren<PlayerLegs>();
 
-        _playerBody.CollidedWithMonster += OnBodyCollidedWithMonster;
-        _playerLegs.CollidedWithPlatform += OnLegsCollidedWithPlatform;
-        _playerLegs.CollidedWithMonster += OnLegsCollidedWithMonster;
+        _playerBody.Collided += OnBodyCollided;
+        _playerLegs.Collided += OnLegsCollided;
     }
 
     private void Start() => NewHeightReached?.Invoke(_maxReachedHeight);
 
     private void OnDestroy()
     {
-        _playerBody.CollidedWithMonster -= OnBodyCollidedWithMonster;
-        _playerLegs.CollidedWithPlatform -= OnLegsCollidedWithPlatform;
-        _playerLegs.CollidedWithMonster -= OnLegsCollidedWithMonster;
+        _playerBody.Collided -= OnBodyCollided;
+        _playerLegs.Collided -= OnLegsCollided;
     }
 
     private void Update()
@@ -78,26 +76,33 @@ public class PlayerMover : MonoBehaviour
 
     private void OnBecameInvisible() => Lose();
 
-    private void OnBodyCollidedWithMonster() => Lose();
+    private void OnBodyCollided(Collision2D collision)
+    {
+        if (collision.collider.TryGetComponent<Monster>(out _))
+            Lose();
+        else if (collision.collider.TryGetComponent<Hole>(out _))
+            Lose();
+    }
 
-    private void OnLegsCollidedWithMonster(Transform monsterTransform)
+    private void OnLegsCollided(Collision2D collision)
     {
         if (_rigidbody.linearVelocityY <= 0f)
         {
-            Jump(monsterTransform);
-            MonsterDowned?.Invoke();
+            if (collision.collider.TryGetComponent(out Platform platform))
+            {
+                Jump(platform.transform);
+                PlatformJumpedOff?.Invoke();
+            }
+            else if (collision.collider.TryGetComponent(out Monster monster))
+            {
+                Jump(monster.transform);
+                MonsterDowned?.Invoke();
+            }
         }
-    }
 
-    private void OnLegsCollidedWithPlatform(Transform platformTransform)
-    {
-        if (_rigidbody.linearVelocityY <= 0f)
-        {
-            Jump(platformTransform);
-            PlatformJumpedOff?.Invoke();
-        }
+        if (collision.collider.TryGetComponent<Hole>(out _))
+            Lose();
     }
-
     private void Jump(Transform collisionTransform)
     {
         _rigidbody.AddForceY(_jumpForce, ForceMode2D.Impulse);

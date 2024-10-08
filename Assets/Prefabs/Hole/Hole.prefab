@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4687854049246499072}
   - component: {fileID: 8085564986933562101}
   - component: {fileID: 246241728192232496}
+  - component: {fileID: 3461814112888768438}
   m_Layer: 9
   m_Name: Hole
   m_TagString: Untagged
@@ -124,3 +125,15 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.6
+--- !u!114 &3461814112888768438
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4707018771306252272}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c7d6c77825f81c449d912696ad50b49, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
