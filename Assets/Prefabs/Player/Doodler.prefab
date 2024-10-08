@@ -477,6 +477,8 @@ MonoBehaviour:
   _jumpForce: 7.5
   _horizontalSpeed: 4
   _maxVelocityMagnitude: 5
+  _normalSprite: {fileID: -6721728136321296765, guid: 6ea839368826a6146a1e487f7c90f93e, type: 3}
+  _legsTuckedSprite: {fileID: 1984921996, guid: 6ea839368826a6146a1e487f7c90f93e, type: 3}
 --- !u!114 &4854572935135823801
 MonoBehaviour:
   m_ObjectHideFlags: 0

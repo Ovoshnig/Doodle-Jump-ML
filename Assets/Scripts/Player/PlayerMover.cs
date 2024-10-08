@@ -11,6 +11,8 @@ public class PlayerMover : MonoBehaviour
     [SerializeField, Min(0f)] private float _jumpForce = 1f;
     [SerializeField, Min(0f)] private float _horizontalSpeed = 1f;
     [SerializeField, Min(0f)] private float _maxVelocityMagnitude = 1f;
+    [SerializeField] private Sprite _normalSprite;
+    [SerializeField] private Sprite _legsTuckedSprite;
 
     private SpriteRenderer _spriteRenderer;
     private Rigidbody2D _rigidbody;
@@ -83,6 +85,8 @@ public class PlayerMover : MonoBehaviour
             position.x = -Mathf.Sign(position.x) * 2.69f;
             transform.position = position;
         }
+
+        _spriteRenderer.sprite = _rigidbody.linearVelocityY > 5f ? _legsTuckedSprite : _normalSprite;
     }
 
     private void FixedUpdate()
