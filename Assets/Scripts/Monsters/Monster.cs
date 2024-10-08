@@ -24,4 +24,8 @@ public abstract class Monster : MonoBehaviour
             _audioSource.Stop();
         }
     }
+
+    protected virtual void Update()
+    {
+    }
 }
