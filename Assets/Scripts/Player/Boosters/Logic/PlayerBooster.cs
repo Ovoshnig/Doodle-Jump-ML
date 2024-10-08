@@ -15,14 +15,15 @@ public abstract class PlayerBooster : MonoBehaviour
 
     protected virtual void Awake() => _audioSource = GetComponent<AudioSource>();
 
-    public void Run()
+    public float Run()
     {
         AudioClip clip = GetRandomClip();
         _audioSource.clip = clip;
         _audioSource.Play();
         float duration = clip.length;
-
         StartCoroutine(BoostRoutine(duration));
+
+        return duration;
     }
 
     private IEnumerator BoostRoutine(float duration)

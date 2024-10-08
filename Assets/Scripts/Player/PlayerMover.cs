@@ -152,17 +152,9 @@ public class PlayerMover : MonoBehaviour
     private void Boost(Booster booster)
     {
         if (booster is Propeller)
-        {
-            _playerPropellerView.Enable();
-            _playerPropeller.Run();
             StartCoroutine(BoostRoutine(_playerPropeller, _playerPropellerView));
-        }
         else if (booster is Jetpack)
-        {
-            _playerJetpackView.Enable();
-            _playerJetpack.Run();
             StartCoroutine(BoostRoutine(_playerJetpack, _playerJetpackView));
-        }
     }
 
     private void Lose()
@@ -175,6 +167,9 @@ public class PlayerMover : MonoBehaviour
 
     private IEnumerator BoostRoutine(PlayerBooster playerBooster, PlayerBoosterView playerBoosterView)
     {
+        float duration = playerBooster.Run();
+        playerBoosterView.Enable(duration);
+
         while (playerBooster.IsRunning)
         {
             NewHeightReached(transform.position.y);
