@@ -30,6 +30,8 @@ public class PlayerMover : MonoBehaviour
     public event Action PlatformJumpedOff;
     public event Action<float> NewHeightReached;
     public event Action Lost;
+    public event Action CrashedIntoMonster;
+    public event Action FlewIntoHole;
     public event Action MonsterDowned;
 
     private void Awake()
@@ -98,9 +100,15 @@ public class PlayerMover : MonoBehaviour
     private void OnBodyCollided(Collision2D collision)
     {
         if (collision.collider.TryGetComponent<Monster>(out _))
+        {
+            CrashedIntoMonster?.Invoke();
             Lose();
+        }
         else if (collision.collider.TryGetComponent<Hole>(out _))
+        {
+            FlewIntoHole?.Invoke();
             Lose();
+        }
     }
 
     private void OnLegsCollided(Collision2D collision)
@@ -120,7 +128,10 @@ public class PlayerMover : MonoBehaviour
         }
 
         if (collision.collider.TryGetComponent<Hole>(out _))
+        {
+            FlewIntoHole?.Invoke();
             Lose();
+        }
     }
 
     private void OnBodyTriggered(Collider2D collider)

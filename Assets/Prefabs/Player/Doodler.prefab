@@ -494,6 +494,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _jumpClip: {fileID: 8300000, guid: f0b4239bc51629b42b1d1b9dc23cedd5, type: 3}
   _loseClip: {fileID: 8300000, guid: 834ee060a64a767469d845b8d01f7bee, type: 3}
+  _crashedIntoMonsterClip: {fileID: 8300000, guid: cfdc20fd3604edf4c9528e03e97fda71, type: 3}
+  _flewIntoHoleClip: {fileID: 8300000, guid: d2418d66068333b46be52cedc826fa54, type: 3}
   _monsterDownClip: {fileID: 8300000, guid: 4f2e5a33faa31584a8991f0e672e9c38, type: 3}
 --- !u!1 &4099047470815077112
 GameObject:
