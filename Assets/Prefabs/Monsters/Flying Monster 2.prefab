@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 4528565520766972129}
   - component: {fileID: 40345853006099348}
   m_Layer: 8
-  m_Name: Flying Monster
+  m_Name: Flying Monster 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -80,7 +80,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -7826287199498012479, guid: 6ea839368826a6146a1e487f7c90f93e, type: 3}
+  m_Sprite: {fileID: -1347233719151212251, guid: 6ea839368826a6146a1e487f7c90f93e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

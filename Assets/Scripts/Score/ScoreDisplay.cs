@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(TMP_Text))]
 public class ScoreDisplay : MonoBehaviour
 {
-    [SerializeField, Min(0)] private float _multiplier = 1;
+    [SerializeField, Min(0f)] private float _multiplier = 1f;
     [SerializeField, Min(0f)] private float _increaseSpeed = 2f;
     [SerializeField] private PlayerMover _playerMover;
 
