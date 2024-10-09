@@ -93,7 +93,7 @@ public class PlayerMover : MonoBehaviour
         else
             _rigidbody.AddForceX(_horizontalSpeed * _horizontalInput, ForceMode2D.Impulse);
 
-        _rigidbody.linearVelocityX = Vector2.ClampMagnitude(_rigidbody.linearVelocity, _maxVelocityMagnitude).x;
+        _rigidbody.linearVelocityX = Mathf.Clamp(_rigidbody.linearVelocityX, -_maxVelocityMagnitude, _maxVelocityMagnitude);
     }
 
     private void OnBecameInvisible() => Lose();
@@ -159,20 +159,20 @@ public class PlayerMover : MonoBehaviour
         }
     }
 
-    private void Boost(Booster booster)
-    {
-        if (booster is Propeller)
-            StartCoroutine(BoostRoutine(_playerPropeller, _playerPropellerView));
-        else if (booster is Jetpack)
-            StartCoroutine(BoostRoutine(_playerJetpack, _playerJetpackView));
-    }
-
     private void Lose()
     {
         _bodyCollider.enabled = false;
         _legsCollider.enabled = false;
         _rigidbody.linearVelocityY = 0f;
         Lost?.Invoke();
+    }
+
+    private void Boost(Booster booster)
+    {
+        if (booster is Propeller)
+            StartCoroutine(BoostRoutine(_playerPropeller, _playerPropellerView));
+        else if (booster is Jetpack)
+            StartCoroutine(BoostRoutine(_playerJetpack, _playerJetpackView));
     }
 
     private IEnumerator BoostRoutine(PlayerBooster playerBooster, PlayerBoosterView playerBoosterView)
