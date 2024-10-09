@@ -27,6 +27,7 @@ public class PlayerMover : MonoBehaviour
     private Camera _camera;
     private float _horizontalInput = 0f;
     private float _maxReachedHeight = 0f;
+    private bool _isLost = false;
 
     public event Action PlatformJumpedOff;
     public event Action<float> NewHeightReached;
@@ -87,12 +88,13 @@ public class PlayerMover : MonoBehaviour
             transform.position = position;
         }
 
+        if (viewportPosition.y < 0f)
+            Lose();
+
         _spriteRenderer.sprite = _rigidbody.linearVelocityY > 5f ? _legsTuckedSprite : _normalSprite;
     }
 
     private void FixedUpdate() => _rigidbody.linearVelocityX = _horizontalInput * _horizontalSpeed;
-
-    private void OnBecameInvisible() => Lose();
 
     private void OnBodyCollided(Collision2D collision)
     {
@@ -157,9 +159,13 @@ public class PlayerMover : MonoBehaviour
 
     private void Lose()
     {
+        if (_isLost)
+            return;
+
         _bodyCollider.enabled = false;
         _legsCollider.enabled = false;
         _rigidbody.linearVelocityY = 0f;
+        _isLost = true;
         Lost?.Invoke();
     }
 
