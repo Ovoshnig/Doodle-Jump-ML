@@ -11,7 +11,6 @@ public class PlayerMover : MonoBehaviour
     [SerializeField, Min(0f)] private float _platformJumpForce = 1f;
     [SerializeField, Min(0f)] private float _monsterJumpForce = 1f;
     [SerializeField, Min(0f)] private float _horizontalSpeed = 1f;
-    [SerializeField, Min(0f)] private float _maxVelocityMagnitude = 1f;
     [SerializeField] private Sprite _normalSprite;
     [SerializeField] private Sprite _legsTuckedSprite;
 
@@ -69,6 +68,7 @@ public class PlayerMover : MonoBehaviour
         _horizontalInput = Input.GetAxis(HorizontalAxisName);
         Vector2 position = transform.position;
         Vector3 scale = transform.localScale;
+        Vector3 viewportPosition = Camera.main.WorldToViewportPoint(position);
 
         if (_horizontalInput > 0f && scale.x > 0f)
             scale.x = -Mathf.Abs(scale.x);
@@ -77,24 +77,18 @@ public class PlayerMover : MonoBehaviour
 
         transform.localScale = scale;
 
-        if (Mathf.Abs(position.x) > 2.7f)
+        if (viewportPosition.x < 0f || viewportPosition.x > 1f)
         {
-            position.x = -Mathf.Sign(position.x) * 2.69f;
+            viewportPosition.x = 1f - viewportPosition.x;
+            position = Camera.main.ViewportToWorldPoint(viewportPosition);
+            position.x -= Mathf.Sign(viewportPosition.x) * 0.1f;
             transform.position = position;
         }
 
         _spriteRenderer.sprite = _rigidbody.linearVelocityY > 5f ? _legsTuckedSprite : _normalSprite;
     }
 
-    private void FixedUpdate()
-    {
-        if (_horizontalInput == 0)
-            _rigidbody.linearVelocityX = Mathf.Max(0f, _rigidbody.linearVelocityX - 0.5f);
-        else
-            _rigidbody.AddForceX(_horizontalSpeed * _horizontalInput, ForceMode2D.Impulse);
-
-        _rigidbody.linearVelocityX = Mathf.Clamp(_rigidbody.linearVelocityX, -_maxVelocityMagnitude, _maxVelocityMagnitude);
-    }
+    private void FixedUpdate() => _rigidbody.linearVelocityX = _horizontalInput * _horizontalSpeed;
 
     private void OnBecameInvisible() => Lose();
 
@@ -188,6 +182,6 @@ public class PlayerMover : MonoBehaviour
         }
 
         playerBoosterView.StopRunningAnimation();
-        Jump(transform);
+        Jump(transform, _platformJumpForce);
     }
 }
