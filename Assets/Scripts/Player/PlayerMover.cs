@@ -24,6 +24,7 @@ public class PlayerMover : MonoBehaviour
     private PlayerJetpack _playerJetpack;
     private PlayerPropellerView _playerPropellerView;
     private PlayerJetpackView _playerJetpackView;
+    private Camera _camera;
     private float _horizontalInput = 0f;
     private float _maxReachedHeight = 0f;
 
@@ -46,6 +47,7 @@ public class PlayerMover : MonoBehaviour
         _playerJetpack = GetComponentInChildren<PlayerJetpack>();
         _playerPropellerView = GetComponentInChildren<PlayerPropellerView>();
         _playerJetpackView = GetComponentInChildren<PlayerJetpackView>();
+        _camera = Camera.main;
 
         _playerBody.Collided += OnBodyCollided;
         _playerBody.Triggered += OnBodyTriggered;
@@ -68,7 +70,7 @@ public class PlayerMover : MonoBehaviour
         _horizontalInput = Input.GetAxis(HorizontalAxisName);
         Vector2 position = transform.position;
         Vector3 scale = transform.localScale;
-        Vector3 viewportPosition = Camera.main.WorldToViewportPoint(position);
+        Vector3 viewportPosition = _camera.WorldToViewportPoint(position);
 
         if (_horizontalInput > 0f && scale.x > 0f)
             scale.x = -Mathf.Abs(scale.x);
@@ -80,7 +82,7 @@ public class PlayerMover : MonoBehaviour
         if (viewportPosition.x < 0f || viewportPosition.x > 1f)
         {
             viewportPosition.x = 1f - viewportPosition.x;
-            position = Camera.main.ViewportToWorldPoint(viewportPosition);
+            position = _camera.ViewportToWorldPoint(viewportPosition);
             position.x -= Mathf.Sign(viewportPosition.x) * 0.1f;
             transform.position = position;
         }

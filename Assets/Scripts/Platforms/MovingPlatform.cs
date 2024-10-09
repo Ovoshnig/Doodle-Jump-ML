@@ -10,10 +10,15 @@ public class MovingPlatform : Platform
     private float _screenBoundPositionX;
     private int _direction;
 
-    private void Awake() => _collider = GetComponent<BoxCollider2D>();
-
-    private void Start()
+    protected override void Awake()
     {
+        base.Awake();
+        _collider = GetComponent<BoxCollider2D>();
+    }
+
+    protected override void Start()
+    {
+        base.Start();
         _colliderWidth = (_collider.size * transform.lossyScale).x / 2;
         _direction = Random.Range(0, 2) == 0 ? -1 : 1;
         _screenBoundPositionX = Camera.main.orthographicSize * Screen.width / Screen.height;
