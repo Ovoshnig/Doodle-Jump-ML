@@ -475,7 +475,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e808b2393a36a7547b61cf67fc2bf393, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _jumpForce: 7.5
+  _platformJumpForce: 7.4
+  _monsterJumpForce: 8.5
   _horizontalSpeed: 4
   _maxVelocityMagnitude: 5
   _normalSprite: {fileID: -6721728136321296765, guid: 6ea839368826a6146a1e487f7c90f93e, type: 3}

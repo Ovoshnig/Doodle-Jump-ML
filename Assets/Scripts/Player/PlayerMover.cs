@@ -8,7 +8,8 @@ public class PlayerMover : MonoBehaviour
 {
     private const string HorizontalAxisName = "Horizontal";
 
-    [SerializeField, Min(0f)] private float _jumpForce = 1f;
+    [SerializeField, Min(0f)] private float _platformJumpForce = 1f;
+    [SerializeField, Min(0f)] private float _monsterJumpForce = 1f;
     [SerializeField, Min(0f)] private float _horizontalSpeed = 1f;
     [SerializeField, Min(0f)] private float _maxVelocityMagnitude = 1f;
     [SerializeField] private Sprite _normalSprite;
@@ -88,7 +89,7 @@ public class PlayerMover : MonoBehaviour
     private void FixedUpdate()
     {
         if (_horizontalInput == 0)
-            _rigidbody.linearVelocityX /= 1.2f;
+            _rigidbody.linearVelocityX = Mathf.Max(0f, _rigidbody.linearVelocityX - 0.5f);
         else
             _rigidbody.AddForceX(_horizontalSpeed * _horizontalInput, ForceMode2D.Impulse);
 
@@ -117,12 +118,12 @@ public class PlayerMover : MonoBehaviour
         {
             if (collision.collider.TryGetComponent(out Platform platform))
             {
-                Jump(platform.transform);
+                Jump(platform.transform, _platformJumpForce);
                 PlatformJumpedOff?.Invoke();
             }
             else if (collision.collider.TryGetComponent(out Monster monster))
             {
-                Jump(monster.transform);
+                Jump(monster.transform, _monsterJumpForce);
                 MonsterDowned?.Invoke();
             }
         }
@@ -146,9 +147,9 @@ public class PlayerMover : MonoBehaviour
             Boost(booster);
     }
 
-    private void Jump(Transform collisionTransform)
+    private void Jump(Transform collisionTransform, float force = 1f)
     {
-        _rigidbody.AddForceY(_jumpForce, ForceMode2D.Impulse);
+        _rigidbody.AddForceY(force, ForceMode2D.Impulse);
         float collisionPositionY = collisionTransform.position.y;
 
         if (collisionPositionY > _maxReachedHeight)
