@@ -64,21 +64,15 @@ public class PlayerMover : MonoBehaviour
     private void Update()
     {
         _horizontalInput = Input.GetAxis(HorizontalAxisName);
-
-        if (_horizontalInput > 0f && !_spriteRenderer.flipX)
-        {
-            _spriteRenderer.flipX = true;
-            _playerPropellerView.Flip(true);
-            _playerJetpackView.Flip(true);
-        }
-        else if (_horizontalInput < 0f && _spriteRenderer.flipX)
-        {
-            _spriteRenderer.flipX = false;
-            _playerPropellerView.Flip(false);
-            _playerJetpackView.Flip(false);
-        }
-
         Vector2 position = transform.position;
+        Vector3 scale = transform.localScale;
+
+        if (_horizontalInput > 0f && scale.x > 0f)
+            scale.x = -Mathf.Abs(scale.x);
+        else if (_horizontalInput < 0f && scale.x < 0f)
+            scale.x = Mathf.Abs(scale.x);
+
+        transform.localScale = scale;
 
         if (Mathf.Abs(position.x) > 2.7f)
         {
@@ -181,7 +175,7 @@ public class PlayerMover : MonoBehaviour
             yield return null;
         }
 
-        playerBoosterView.Disable();
+        playerBoosterView.StopRunningAnimation();
         Jump(transform);
     }
 }
