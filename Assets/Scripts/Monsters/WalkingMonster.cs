@@ -8,8 +8,8 @@ public class WalkingMonster : Monster
 
     private SpriteRenderer _spriteRenderer;
     private CapsuleCollider2D _collider;
+    private Camera _camera;
     private float _colliderWidth;
-    private float _screenBoundPositionX;
     private int _direction;
 
     protected override void Awake()
@@ -17,27 +17,29 @@ public class WalkingMonster : Monster
         base.Awake();
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _collider = GetComponent<CapsuleCollider2D>();
+        _camera = Camera.main;
     }
 
     protected override void Start()
     {
         base.Start();
-        _colliderWidth = (_collider.size * transform.lossyScale).x / 2;
+        _colliderWidth = _collider.bounds.extents.x;
         _direction = Random.Range(0, 2) == 0 ? -1 : 1;
         _spriteRenderer.flipX = _direction == -1;
-        _screenBoundPositionX = Camera.main.orthographicSize * Screen.width / Screen.height;
     }
 
     protected override void Update()
     {
-        transform.Translate(new Vector2(_speed * _direction * Time.deltaTime, 0f));
-        float positionX = transform.position.x;
+        Vector2 position = transform.position;
+        position.x += _direction * _colliderWidth;
+        Vector2 viewportPosition = _camera.WorldToViewportPoint(position);
 
-        if (Mathf.Abs(positionX) + _colliderWidth > _screenBoundPositionX)
+        if (viewportPosition.x < 0f || viewportPosition.x > 1f)
         {
             _direction = -_direction;
             _spriteRenderer.flipX = _direction == -1;
-            transform.Translate(new Vector2(_speed * _direction * Time.deltaTime, 0f));
         }
+
+        transform.Translate(new Vector2(_speed * _direction * Time.deltaTime, 0f));
     }
 }
