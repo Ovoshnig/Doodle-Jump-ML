@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.Pool;
-using System.Collections.Generic;
 
 public class PlatformGenerator : GeneratorBase
 {
@@ -13,10 +12,10 @@ public class PlatformGenerator : GeneratorBase
     private IObjectPool<GameObject> _movingPlatformPool;
     private IObjectPool<GameObject> _disappearingPlatformPool;
 
-    private readonly List<GameObject> _activePlatforms = new();
-
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+
         Transform platformGroup = new GameObject("Platforms").transform;
         _normalPlatformPool = CreatePool(_normalPlatformPrefab, platformGroup);
         _movingPlatformPool = CreatePool(_movingPlatformPrefab, platformGroup);
@@ -25,20 +24,21 @@ public class PlatformGenerator : GeneratorBase
 
     public override void Generate(float height)
     {
-        GameObject platformPrefab;
+        IObjectPool<GameObject> pool;
         float random = Random.Range(0f, 1f);
 
         if (random < Settings.NormalPlatformFrequency)
-            platformPrefab = _normalPlatformPool.Get();
+            pool = _normalPlatformPool;
         else if (random < Settings.NormalPlatformFrequency + Settings.MovingPlatformFrequency && height > Settings.MovingPlatformMinHeight)
-            platformPrefab = _movingPlatformPool.Get();
+            pool = _movingPlatformPool;
         else if (height > Settings.DisappearingPlatformMinHeight)
-            platformPrefab = _disappearingPlatformPool.Get();
+            pool = _disappearingPlatformPool;
         else
-            platformPrefab = _normalPlatformPool.Get();
+            pool = _normalPlatformPool;
 
-        platformPrefab.transform.position = GetRandomPosition(height);
-        _activePlatforms.Add(platformPrefab);
+        GameObject platform = pool.Get();
+        ActiveObjects[platform] = pool;
+        platform.transform.position = GetRandomPosition(height);
     }
 
     public Vector2 SpawnNormalPlatform(float height)
@@ -46,7 +46,7 @@ public class PlatformGenerator : GeneratorBase
         GameObject platform = _normalPlatformPool.Get();
         Vector2 position = new(GetRandomPositionX(), height);
         platform.transform.position = position;
-        _activePlatforms.Add(platform);
+        ActiveObjects[platform] = _normalPlatformPool;
 
         return position;
     }
@@ -54,29 +54,11 @@ public class PlatformGenerator : GeneratorBase
     public void PlacePlayerAboveFirstPlatform(Vector2 platformPosition) =>
         _player.transform.position = platformPosition + Vector2.up * 0.6f;
 
-    public override void RemoveOffScreenElements(float cameraHeight)
-    {
-        for (int i = _activePlatforms.Count - 1; i >= 0; i--)
-        {
-            if (_activePlatforms[i].transform.position.y < cameraHeight - Camera.main.orthographicSize)
-            {
-                if (_activePlatforms[i].TryGetComponent<NormalPlatform>(out _))
-                    _normalPlatformPool.Release(_activePlatforms[i]);
-                else if (_activePlatforms[i].TryGetComponent<MovingPlatform>(out _))
-                    _movingPlatformPool.Release(_activePlatforms[i]);
-                else if (_activePlatforms[i].TryGetComponent<DisappearingPlatform>(out _))
-                    _disappearingPlatformPool.Release(_activePlatforms[i]);
-
-                _activePlatforms.RemoveAt(i);
-            }
-        }
-    }
-
     public void ReleasePlatform(DisappearingPlatform disappearingPlatform)
     {
         GameObject platformObject = disappearingPlatform.gameObject;
         _disappearingPlatformPool.Release(platformObject);
-        _activePlatforms.Remove(platformObject);
+        ActiveObjects.Remove(platformObject);
     }
 
     protected override Vector2 GetRandomPosition(float height) => new(GetRandomPositionX(), height);

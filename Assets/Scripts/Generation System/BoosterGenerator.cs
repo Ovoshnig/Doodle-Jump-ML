@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -9,12 +8,12 @@ public class BoosterGenerator : GeneratorBase
 
     private IObjectPool<GameObject> _propellerPool;
     private IObjectPool<GameObject> _jetpackPool;
-
-    private readonly List<GameObject> _activeBoosters = new();
     private PlatformGenerator _platformGenerator;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+
         Transform boosterGroup = new GameObject("Boosters").transform;
         _propellerPool = CreatePool(_propellerPrefab, boosterGroup);
         _jetpackPool = CreatePool(_jetpackPrefab, boosterGroup);
@@ -27,40 +26,29 @@ public class BoosterGenerator : GeneratorBase
         if (height < Settings.BoosterMinHeight)
             return;
 
-        GameObject boosterPrefab = null;
+        IObjectPool<GameObject> pool;
+        float verticalOffset;
         float random = Random.Range(0f, 1f);
 
         if (random < Settings.PropellerFrequency)
         {
-            Vector2 platformPosition = _platformGenerator.SpawnNormalPlatform(height);
-            boosterPrefab = _propellerPool.Get();
-            boosterPrefab.transform.position = new Vector2(platformPosition.x, height + 0.3f);
+            pool = _propellerPool;
+            verticalOffset = 0.3f;
         }
         else if (random < Settings.PropellerFrequency + Settings.JetpackFrequency)
         {
-            Vector2 platformPosition = _platformGenerator.SpawnNormalPlatform(height);
-            boosterPrefab = _jetpackPool.Get();
-            boosterPrefab.transform.position = new Vector2(platformPosition.x, height + 0.4f);
+            pool = _jetpackPool;
+            verticalOffset = 0.4f;
         }
-
-        if (boosterPrefab != null)
-            _activeBoosters.Add(boosterPrefab);
-    }
-
-    public override void RemoveOffScreenElements(float cameraHeight)
-    {
-        for (int i = _activeBoosters.Count - 1; i >= 0; i--)
+        else
         {
-            if (_activeBoosters[i].transform.position.y < cameraHeight - Camera.main.orthographicSize)
-            {
-                if (_activeBoosters[i].TryGetComponent<Propeller>(out _))
-                    _propellerPool.Release(_activeBoosters[i]);
-                else if (_activeBoosters[i].TryGetComponent<Jetpack>(out _))
-                    _jetpackPool.Release(_activeBoosters[i]);
-
-                _activeBoosters.RemoveAt(i);
-            }
+            return;
         }
+
+        GameObject booster = pool.Get();
+        ActiveObjects[booster] = pool;
+        Vector2 platformPosition = _platformGenerator.SpawnNormalPlatform(height);
+        booster.transform.position = new Vector2(platformPosition.x, height + verticalOffset);
     }
 
     public void ReleaseBooster(Booster booster)
@@ -72,7 +60,7 @@ public class BoosterGenerator : GeneratorBase
         else if (booster is Jetpack)
             _jetpackPool.Release(boosterObject);
 
-        _activeBoosters.Remove(boosterObject);
+        ActiveObjects.Remove(boosterObject);
     }
 
     protected override Vector2 GetRandomPosition(float height)

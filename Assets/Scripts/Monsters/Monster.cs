@@ -6,7 +6,6 @@ public abstract class Monster : MonoBehaviour
 {
     private Rigidbody2D _rigidbody;
     private AudioSource _audioSource;
-    private MonsterGenerator _monsterGenerator;
 
     protected virtual void Awake()
     {
@@ -14,7 +13,11 @@ public abstract class Monster : MonoBehaviour
         _audioSource = GetComponent<AudioSource>();
     }
 
-    protected virtual void OnEnable() => _rigidbody.bodyType = RigidbodyType2D.Static;
+    protected virtual void OnEnable()
+    {
+        _rigidbody.bodyType = RigidbodyType2D.Static;
+        _audioSource.Play();
+    }
 
     protected virtual void Start()
     {
@@ -25,7 +28,6 @@ public abstract class Monster : MonoBehaviour
         if (collision.collider.TryGetComponent<PlayerLegs>(out _))
         {
             _rigidbody.bodyType = RigidbodyType2D.Dynamic;
-            _audioSource.loop = false;
             _audioSource.Stop();
         }
     }
