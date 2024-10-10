@@ -5,6 +5,8 @@ using UnityEngine;
 [RequireComponent(typeof(AudioSource))]
 public class DisappearingPlatform : Platform
 {
+    [SerializeField] private AudioClip _disableClip;
+
     private SpriteRenderer _spriteRenderer;
     private Collider2D _collider;
     private AudioSource _audioSource;
@@ -12,8 +14,14 @@ public class DisappearingPlatform : Platform
     protected override void Awake()
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
-        _collider = GetComponent<BoxCollider2D>();
+        _collider = GetComponent<Collider2D>();
         _audioSource = GetComponent<AudioSource>();
+    }
+
+    private void OnEnable()
+    {
+        _spriteRenderer.enabled = true;
+        _collider.enabled = true;
     }
 
     protected override void OnCollisionEnter2D(Collision2D collision)
@@ -23,10 +31,19 @@ public class DisappearingPlatform : Platform
             if (collision.gameObject.TryGetComponent(out Rigidbody2D rigidbody)
                 && rigidbody.linearVelocityY <= 0f)
             {
-                _audioSource.Play();
-                _spriteRenderer.enabled = false;
-                _collider.enabled = false;
+                _audioSource.PlayOneShot(_disableClip);
+                StartCoroutine(ReleaseAfterSound());
             }
         }
+    }
+
+    private System.Collections.IEnumerator ReleaseAfterSound()
+    {
+        _spriteRenderer.enabled = false;
+        _collider.enabled = false;
+
+        yield return new WaitForSeconds(_disableClip.length);
+
+        PlatformGenerator.ReleasePlatform(this);
     }
 }

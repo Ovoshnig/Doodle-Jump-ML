@@ -14,83 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <MinimalSpacing>k__BackingField: 0.2
   <MaximumSpacing>k__BackingField: 2.6
-  <MaxHeight>k__BackingField: 400
-  <PlatformFrequencyByHeight>k__BackingField:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  <MonsterFrequencyByHeight>k__BackingField:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0.3
-      value: 0.01
-      inSlope: 0.00206235
-      outSlope: 0.00206235
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.36607137
-    - serializedVersion: 3
-      time: 1
-      value: 0.01
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  <BoosterFrequencyByHeight>k__BackingField:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0.1
-      value: 0.5
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0.5
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
   <NormalPlatformFrequency>k__BackingField: 0.7
   <MovingPlatformFrequency>k__BackingField: 0.2
   <DisappearingPlatformFrequency>k__BackingField: 0.1
-  <MovingPlatformMinHeight>k__BackingField: 20
+  <MovingPlatformMinHeight>k__BackingField: 30
   <DisappearingPlatformMinHeight>k__BackingField: 150
   <FlyingMonsterFrequency>k__BackingField: 0.01
   <WalkingMonsterFrequency>k__BackingField: 0.005

@@ -420,7 +420,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 195de6c0bc6aa9544aaeae91519fc7e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _volume: 0
+  _volume: 0.361
 --- !u!1 &908150780
 GameObject:
   m_ObjectHideFlags: 0
@@ -847,6 +847,7 @@ MonoBehaviour:
   _platformGenerator: {fileID: 1767775510}
   _monsterGenerator: {fileID: 1767775509}
   _boosterGenerator: {fileID: 1767775508}
+  _playerMover: {fileID: 2007441224}
 --- !u!1001 &2007441222
 PrefabInstance:
   m_ObjectHideFlags: 0

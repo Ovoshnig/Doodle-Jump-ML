@@ -6,6 +6,7 @@ public abstract class Monster : MonoBehaviour
 {
     private Rigidbody2D _rigidbody;
     private AudioSource _audioSource;
+    private MonsterGenerator _monsterGenerator;
 
     protected virtual void Awake()
     {
@@ -13,7 +14,11 @@ public abstract class Monster : MonoBehaviour
         _audioSource = GetComponent<AudioSource>();
     }
 
-    protected virtual void Start() => _rigidbody.bodyType = RigidbodyType2D.Static;
+    protected virtual void OnEnable() => _rigidbody.bodyType = RigidbodyType2D.Static;
+
+    protected virtual void Start()
+    {
+    }
 
     protected virtual void OnCollisionEnter2D(Collision2D collision)
     {

@@ -265,3 +265,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9be73cad4bc99264d902a028069a0e78, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _disableClip: {fileID: 8300000, guid: 1baac752d43aa334f8210697f4a2eed4, type: 3}
