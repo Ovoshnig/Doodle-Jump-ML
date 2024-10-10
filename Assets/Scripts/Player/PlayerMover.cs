@@ -27,7 +27,6 @@ public class PlayerMover : MonoBehaviour
     private Camera _camera;
     private float _horizontalInput = 0f;
     private float _maxReachedHeight = 0f;
-    private bool _isUsingBooster = false;
     private bool _isLost = false;
 
     public event Action PlatformJumpedOff;
@@ -99,26 +98,22 @@ public class PlayerMover : MonoBehaviour
 
     private void OnBodyCollided(Collision2D collision)
     {
-        if (_isUsingBooster)
-            return;
-
         if (collision.collider.TryGetComponent<Monster>(out _))
         {
             CrashedIntoMonster?.Invoke();
+            _rigidbody.linearVelocityY = 0f;
             Lose();
         }
         else if (collision.collider.TryGetComponent<Hole>(out _))
         {
             FlewIntoHole?.Invoke();
+            _rigidbody.linearVelocityY = 0f;
             Lose();
         }
     }
 
     private void OnLegsCollided(Collision2D collision)
     {
-        if (_isUsingBooster)
-            return;
-
         if (_rigidbody.linearVelocityY <= 0f)
         {
             if (collision.collider.TryGetComponent(out Platform platform))
@@ -136,6 +131,7 @@ public class PlayerMover : MonoBehaviour
         if (collision.collider.TryGetComponent<Hole>(out _))
         {
             FlewIntoHole?.Invoke();
+            _rigidbody.linearVelocityY = 0f;
             Lose();
         }
     }
@@ -169,18 +165,13 @@ public class PlayerMover : MonoBehaviour
         if (_isLost)
             return;
 
-        _bodyCollider.enabled = false;
-        _legsCollider.enabled = false;
-        _rigidbody.linearVelocityY = 0f;
+        DisableColliders();
         _isLost = true;
         Lost?.Invoke();
     }
 
     private void Boost(Booster booster)
     {
-        if (_isUsingBooster)
-            return;
-
         if (booster is Propeller)
             StartCoroutine(BoostRoutine(_playerPropeller, _playerPropellerView));
         else if (booster is Jetpack)
@@ -191,7 +182,7 @@ public class PlayerMover : MonoBehaviour
     {
         float duration = playerBooster.Run();
         playerBoosterView.Enable(duration);
-        _isUsingBooster = true;
+        DisableColliders();
 
         while (playerBooster.IsRunning)
         {
@@ -202,6 +193,18 @@ public class PlayerMover : MonoBehaviour
 
         playerBoosterView.StopRunningAnimation();
         Jump(transform, _platformJumpForce);
-        _isUsingBooster = false;
+        EnableColliders();
+    }
+
+    private void EnableColliders()
+    {
+        _bodyCollider.enabled = true;
+        _legsCollider.enabled = true;
+    }
+
+    private void DisableColliders()
+    {
+        _bodyCollider.enabled = false;
+        _legsCollider.enabled = false;
     }
 }
