@@ -1,15 +1,18 @@
 using UnityEngine;
 
 [RequireComponent(typeof(SpriteRenderer))]
+[RequireComponent(typeof(Collider2D))]
 [RequireComponent(typeof(AudioSource))]
 public class DisappearingPlatform : Platform
 {
     private SpriteRenderer _spriteRenderer;
+    private Collider2D _collider;
     private AudioSource _audioSource;
 
     protected override void Awake()
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
+        _collider = GetComponent<BoxCollider2D>();
         _audioSource = GetComponent<AudioSource>();
     }
 
@@ -22,6 +25,7 @@ public class DisappearingPlatform : Platform
             {
                 _audioSource.Play();
                 _spriteRenderer.enabled = false;
+                _collider.enabled = false;
             }
         }
     }

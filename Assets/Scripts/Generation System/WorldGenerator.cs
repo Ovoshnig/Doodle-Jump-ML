@@ -15,13 +15,16 @@ public class WorldGenerator : MonoBehaviour
         _monsterGenerator.SetSettings(_generationSettings);
         _boosterGenerator.SetSettings(_generationSettings);
 
+        _boosterGenerator.SetPlatformGenerator(_platformGenerator);
+
         GenerateInitialWorld();
     }
 
     private void GenerateInitialWorld()
     {
-        Vector2 position = _platformGenerator.SpawnFirstPlatform();
+        Vector2 position = _platformGenerator.SpawnNormalPlatform(_currentHeight);
         _platformGenerator.PlacePlayerAboveFirstPlatform(position);
+        _currentHeight += Random.Range(_generationSettings.MinimalSpacing, _generationSettings.MaximumSpacing);
 
         while (_currentHeight < _generationSettings.MaxHeight)
         {
@@ -29,7 +32,6 @@ public class WorldGenerator : MonoBehaviour
             _monsterGenerator.Generate(_currentHeight);
             _boosterGenerator.Generate(_currentHeight);
 
-            // Увеличиваем текущую высоту на случайное значение
             _currentHeight += Random.Range(_generationSettings.MinimalSpacing, _generationSettings.MaximumSpacing);
         }
     }

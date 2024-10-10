@@ -811,9 +811,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a63deb1f93ba584f93ecb0dac248367, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _flyingMonsterPrefab: {fileID: 3811306090100936480, guid: 9b036bf0708dcf84688ca5301516fe84, type: 3}
+  _flyingMonster1Prefab: {fileID: 3811306090100936480, guid: 9b036bf0708dcf84688ca5301516fe84, type: 3}
+  _flyingMonster2Prefab: {fileID: 3811306090100936480, guid: d11ec56fc71ec874c879bf3e854b7ab9, type: 3}
   _walkingMonsterPrefab: {fileID: 4267680501069362896, guid: c5d338c17beb6b64cb045f9472df4808, type: 3}
-  _blackHolePrefab: {fileID: 4707018771306252272, guid: 52f2bdafacfcac04d86b456975490ff4, type: 3}
+  _holePrefab: {fileID: 4707018771306252272, guid: 52f2bdafacfcac04d86b456975490ff4, type: 3}
 --- !u!114 &1767775510
 MonoBehaviour:
   m_ObjectHideFlags: 0

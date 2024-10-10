@@ -12,33 +12,26 @@ public class PlatformGenerator : GeneratorBase
 
     public override void Generate(float height)
     {
-        float chance = Settings.PlatformFrequencyByHeight.Evaluate(height / Settings.MaxHeight);
-        float rand = Random.Range(0f, 1f);
+        float random = Random.Range(0f, 1f);
         GameObject platformPrefab;
 
-        // Исправленная логика распределения вероятностей
-        if (rand < Settings.NormalPlatformFrequency * chance)
-        {
+        if (random < Settings.NormalPlatformFrequency)
             platformPrefab = _normalPlatformPrefab;
-        }
-        else if (rand < (Settings.NormalPlatformFrequency + Settings.MovingPlatformFrequency) * chance)
-        {
+        else if (random < Settings.NormalPlatformFrequency + Settings.MovingPlatformFrequency && height > Settings.MovingPlatformMinHeight)
             platformPrefab = _movingPlatformPrefab;
-        }
-        else
-        {
+        else if (height > Settings.DisappearingPlatformMinHeight)
             platformPrefab = _disappearingPlatformPrefab;
-        }
+        else
+            platformPrefab = _normalPlatformPrefab;
 
-        // Спавн платформы
         GameObject platform = Instantiate(platformPrefab, GetRandomPosition(height), Quaternion.identity);
         _activePlatforms.Add(platform);
     }
 
-    public Vector2 SpawnFirstPlatform()
+    public Vector2 SpawnNormalPlatform(float height)
     {
         GameObject platform = Instantiate(_normalPlatformPrefab);
-        Vector2 position = new(GetRandomPositionX(), 0f);
+        Vector2 position = new(GetRandomPositionX(), height);
         platform.transform.position = position;
         _activePlatforms.Add(platform);
 
@@ -53,7 +46,7 @@ public class PlatformGenerator : GeneratorBase
         // Отключаем платформы ниже камеры
     }
 
-    private float GetRandomPositionX() => Random.Range(-2.3f, 2.3f);
+    protected override Vector2 GetRandomPosition(float height) => new(GetRandomPositionX(), height);
 
-    private Vector2 GetRandomPosition(float height) => new(GetRandomPositionX(), height);
+    private float GetRandomPositionX() => Random.Range(-2.3f, 2.3f);
 }

@@ -2,36 +2,36 @@ using UnityEngine;
 
 public class MonsterGenerator : GeneratorBase
 {
-    [SerializeField] private GameObject _flyingMonsterPrefab;
+    [SerializeField] private GameObject _flyingMonster1Prefab;
+    [SerializeField] private GameObject _flyingMonster2Prefab;
     [SerializeField] private GameObject _walkingMonsterPrefab;
-    [SerializeField] private GameObject _blackHolePrefab;
+    [SerializeField] private GameObject _holePrefab;
 
     public override void Generate(float height)
     {
-        // ѕровер€ем минимальные высоты дл€ генерации монстров
-        if (height < Settings.FlyingMonsterStartHeight && height < Settings.WalkingMonsterStartHeight && height < Settings.BlackHoleStartHeight)
-        {
-            return;
-        }
+        float random = Random.Range(0f, 1f);
 
-        // √енераци€ монстра в зависимости от высоты
-        if (height >= Settings.BlackHoleStartHeight && Random.Range(0f, 1f) < Settings.MonsterFrequencyByHeight.Evaluate(height / Settings.MaxHeight))
+        if (random < Settings.FlyingMonsterFrequency && height > Settings.FlyingMonsterMinHeight)
         {
-            Instantiate(_blackHolePrefab, GetRandomPosition(height), Quaternion.identity);
+            GameObject flyingMonsterPrefab = Random.Range(0, 2) == 0 ? _flyingMonster1Prefab : _flyingMonster2Prefab;
+            Instantiate(flyingMonsterPrefab, GetRandomPosition(height), Quaternion.identity);
         }
-        else if (height >= Settings.WalkingMonsterStartHeight)
+        else if (random < Settings.FlyingMonsterFrequency + Settings.WalkingMonsterFrequency 
+            && height > Settings.WalkingMonsterMinHeight)
         {
             Instantiate(_walkingMonsterPrefab, GetRandomPosition(height), Quaternion.identity);
         }
-        else if (height >= Settings.FlyingMonsterStartHeight)
+        else if (random < Settings.FlyingMonsterFrequency + Settings.WalkingMonsterFrequency + Settings.HoleFrequency
+            && height > Settings.HoleMinHeight)
         {
-            Instantiate(_flyingMonsterPrefab, GetRandomPosition(height), Quaternion.identity);
+            Instantiate(_holePrefab, GetRandomPosition(height), Quaternion.identity);
         }
     }
 
-    private Vector2 GetRandomPosition(float height)
+    protected override Vector2 GetRandomPosition(float height)
     {
-        float x = Random.Range(-2.5f, 2.5f); // ќграничени€ по X
+        float x = Random.Range(-2.5f, 2.5f);
+
         return new Vector2(x, height);
     }
 }

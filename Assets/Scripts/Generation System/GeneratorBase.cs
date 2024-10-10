@@ -7,4 +7,6 @@ public abstract class GeneratorBase : MonoBehaviour
     public void SetSettings(GenerationSettings settings) => Settings = settings;
 
     public abstract void Generate(float height);
+
+    protected abstract Vector2 GetRandomPosition(float height);
 }
