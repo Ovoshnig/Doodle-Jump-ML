@@ -34,7 +34,9 @@ public class PlatformGenerator : GeneratorBase
         foreach (var @object in objects)
         {
             BoxCollider2D collider = @object.GetComponent<BoxCollider2D>();
-            ObjectBoundsX[@object.name] = screenBoundX - 0.5f * collider.size.x * @object.transform.lossyScale.x;
+            Vector2 halfSize = 0.5f * collider.size * @object.transform.lossyScale;
+            ObjectBoundsX[@object.name] = screenBoundX - halfSize.x;
+            ObjectHalfSizesY[@object.name] = halfSize.y;
         }
     }
 

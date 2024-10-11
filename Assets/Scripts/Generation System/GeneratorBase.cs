@@ -8,6 +8,7 @@ public abstract class GeneratorBase : MonoBehaviour
     protected GenerationSettings Settings { get; private set; }
     protected Camera Camera { get; private set; }
     protected Dictionary<string, float> ObjectBoundsX { get; } = new();
+    protected Dictionary<string, float> ObjectHalfSizesY { get; } = new();
     protected Dictionary<GameObject, IObjectPool<GameObject>> ActiveObjects { get; } = new();
 
     protected virtual void Awake() => Camera = Camera.main;
@@ -24,9 +25,10 @@ public abstract class GeneratorBase : MonoBehaviour
         {
             GameObject activeObject = keys[i];
             Vector2 position = activeObject.transform.position;
-            Vector2 viewportPosition = Camera.WorldToViewportPoint(position);
+            Vector2 topPosition = new(position.x, position.y + ObjectHalfSizesY[activeObject.name]);
+            Vector2 topViewportPosition = Camera.WorldToViewportPoint(topPosition);
 
-            if (viewportPosition.y < 0f)
+            if (topViewportPosition.y < 0f)
             {
                 if (ActiveObjects.TryGetValue(activeObject, out IObjectPool<GameObject> pool))
                     pool.Release(activeObject);

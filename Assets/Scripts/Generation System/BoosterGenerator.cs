@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -17,6 +18,22 @@ public class BoosterGenerator : GeneratorBase
         Transform boosterGroup = new GameObject("Boosters").transform;
         _propellerPool = CreatePool(_propellerPrefab, boosterGroup);
         _jetpackPool = CreatePool(_jetpackPrefab, boosterGroup);
+
+        List<GameObject> objects = new()
+        {
+            _propellerPrefab,
+            _jetpackPrefab
+        };
+
+        float screenBoundX = Camera.ViewportToWorldPoint(new Vector2(1f, 0f)).x;
+
+        foreach (var @object in objects)
+        {
+            BoxCollider2D collider = @object.GetComponent<BoxCollider2D>();
+            Vector2 halfSize = 0.5f * collider.size * @object.transform.lossyScale;
+            ObjectBoundsX[@object.name] = screenBoundX - halfSize.x;
+            ObjectHalfSizesY[@object.name] = halfSize.y;
+        }
     }
 
     public void SetPlatformGenerator(PlatformGenerator platformGenerator) => _platformGenerator = platformGenerator;

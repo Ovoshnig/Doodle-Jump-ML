@@ -36,9 +36,17 @@ public class MonsterGenerator : GeneratorBase
         foreach (var @object in objects)
         {
             if (@object.TryGetComponent(out CapsuleCollider2D capsuleCollider))
-                ObjectBoundsX[@object.name] = screenBoundX - 0.5f * capsuleCollider.size.x * @object.transform.lossyScale.x;
+            {
+                Vector2 halfSize = 0.5f * capsuleCollider.size * @object.transform.lossyScale;
+                ObjectBoundsX[@object.name] = screenBoundX - halfSize.x;
+                ObjectHalfSizesY[@object.name] = halfSize.y;
+            }
             else if (@object.TryGetComponent(out CircleCollider2D circleCollider))
-                ObjectBoundsX[@object.name] = screenBoundX - circleCollider.radius * @object.transform.lossyScale.x;
+            {
+                Vector2 halfSize = circleCollider.radius * @object.transform.lossyScale;
+                ObjectBoundsX[@object.name] = screenBoundX - halfSize.x;
+                ObjectHalfSizesY[@object.name] = halfSize.y;
+            }
         }
     }
 
