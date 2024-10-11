@@ -10,9 +10,8 @@ public class PlayerMover : MonoBehaviour
 
     [SerializeField, Min(0f)] private float _platformJumpForce = 7.4f;
     [SerializeField, Min(0f)] private float _monsterJumpForce = 8.2f;
+    [SerializeField, Min(0f)] private float _springJumpForce = 20f;
     [SerializeField, Min(0f)] private float _horizontalSpeed = 4.8f;
-    [SerializeField, Min(0f)] private float _springDistance = 8f;
-    [SerializeField, Min(0f)] private float _staticBoosterSpeed = 4f;
     [SerializeField] private Sprite _normalSprite;
     [SerializeField] private Sprite _legsTuckedSprite;
 
@@ -205,19 +204,16 @@ public class PlayerMover : MonoBehaviour
     private void StaticBoost(StaticBooster staticBooster)
     {
         if (staticBooster is Spring)
-            StartCoroutine(StaticBoostRoutine(_springDistance));
+            StartCoroutine(StaticBoostRoutine(_springJumpForce));
     }
 
-    private IEnumerator StaticBoostRoutine(float distance)
+    private IEnumerator StaticBoostRoutine(float force)
     {
-        float startPositionY = transform.position.y;
-        float targetPositionY = startPositionY + distance;
-        WaitForFixedUpdate waitForFixedUpdate = new();
+        _rigidbody.AddForceY(force, ForceMode2D.Impulse);
 
-        while (transform.position.y < targetPositionY)
+        while (_rigidbody.linearVelocityY >= 0)
         {
             float positionY = transform.position.y;
-            _rigidbody.linearVelocityY = _staticBoosterSpeed;
             _maxReachedHeight = positionY;
             NewHeightReached(positionY, true);
 

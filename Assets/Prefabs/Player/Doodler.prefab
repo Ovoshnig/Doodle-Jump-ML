@@ -222,7 +222,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: feb10e83950185e4ca115a155d1dddf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _fallingClip: {fileID: 7400000, guid: 76ac6d7429acfdc4c919a01c4c0b49d9, type: 2}
 --- !u!114 &2894702265262743197
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -477,6 +476,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _platformJumpForce: 7.4
   _monsterJumpForce: 8.5
+  _springJumpForce: 20
   _horizontalSpeed: 4.8
   _normalSprite: {fileID: -6721728136321296765, guid: 6ea839368826a6146a1e487f7c90f93e, type: 3}
   _legsTuckedSprite: {fileID: 1984921996, guid: 6ea839368826a6146a1e487f7c90f93e, type: 3}
@@ -912,7 +912,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf7586cebd1c9f74b8d41d8ac1abf5f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _fallingClip: {fileID: 7400000, guid: 7763e64fc28e977489353467ea174b20, type: 2}
   _runningClip: {fileID: 7400000, guid: d4a5600b3a3bbd04493a82ba4edcd4fa, type: 2}
 --- !u!114 &7186168808579845046
 MonoBehaviour:
