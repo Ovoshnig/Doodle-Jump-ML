@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(SpriteRenderer))]
@@ -6,8 +5,6 @@ using UnityEngine;
 public abstract class PlayerBoosterView : MonoBehaviour
 {
     private const string IsRunningName = "isRunning";
-
-    [SerializeField] private AnimationClip _fallingClip;
 
     private SpriteRenderer _spriteRenderer;
     private Animator _animator;
@@ -28,10 +25,7 @@ public abstract class PlayerBoosterView : MonoBehaviour
 
     public void Disable() => _spriteRenderer.enabled = false;
 
-    public virtual void StopRunningAnimation()
-    {
-        _animator.SetBool(IsRunningName, false);
-    }
+    public virtual void StopRunningAnimation() => _animator.SetBool(IsRunningName, false);
 
     protected virtual void PlayRunningAnimation(float targetDuration) => _animator.SetBool(IsRunningName, true);
 }
