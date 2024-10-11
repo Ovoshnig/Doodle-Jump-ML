@@ -6,9 +6,9 @@ public class PlayerJetpackView : PlayerBoosterView
 
     [SerializeField] private AnimationClip _runningClip;
 
-    protected override void RunAnimation(float targetDuration)
+    protected override void PlayRunningAnimation(float targetDuration)
     {
-        base.RunAnimation(targetDuration);
+        base.PlayRunningAnimation(targetDuration);
         Animator.SetFloat(SpeedMultiplierName, _runningClip.length / targetDuration);
     }
 }

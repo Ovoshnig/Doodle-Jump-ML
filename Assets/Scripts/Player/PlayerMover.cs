@@ -30,7 +30,7 @@ public class PlayerMover : MonoBehaviour
     private bool _isLost = false;
 
     public event Action PlatformJumpedOff;
-    public event Action<float> NewHeightReached;
+    public event Action<float, bool> NewHeightReached;
     public event Action Lost;
     public event Action CrashedIntoMonster;
     public event Action FlewIntoHole;
@@ -56,7 +56,7 @@ public class PlayerMover : MonoBehaviour
         _playerLegs.Triggered += OnLegsTriggered;
     }
 
-    private void Start() => NewHeightReached?.Invoke(_maxReachedHeight);
+    private void Start() => NewHeightReached?.Invoke(_maxReachedHeight, false);
 
     private void OnDestroy()
     {
@@ -156,7 +156,7 @@ public class PlayerMover : MonoBehaviour
         if (collisionPositionY > _maxReachedHeight)
         {
             _maxReachedHeight = collisionPositionY;
-            NewHeightReached?.Invoke(_maxReachedHeight);
+            NewHeightReached?.Invoke(_maxReachedHeight, false);
         }
     }
 
@@ -186,7 +186,7 @@ public class PlayerMover : MonoBehaviour
 
         while (playerBooster.IsRunning)
         {
-            NewHeightReached(transform.position.y);
+            NewHeightReached(transform.position.y, true);
 
             yield return null;
         }

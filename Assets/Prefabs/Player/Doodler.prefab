@@ -235,7 +235,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 555143e5ff387d44790a9365fbbd9a66, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _distance: 100
+  _distance: 80
   _clips:
   - {fileID: 8300000, guid: 0dc590a440a42c242927f19084be65a8, type: 3}
   - {fileID: 8300000, guid: f0699683f031a8841ad4aea3ce29acc3, type: 3}
@@ -906,7 +906,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95f61b4a03ae2a74cacd1b5ced33b14c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _distance: 150
+  _distance: 100
   _clips:
   - {fileID: 8300000, guid: 3738acd9fc83cde4dba394360289909b, type: 3}
   - {fileID: 8300000, guid: 265bccaef7c254647b32fa0385d27a52, type: 3}

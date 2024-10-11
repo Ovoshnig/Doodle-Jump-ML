@@ -23,7 +23,7 @@ public abstract class PlayerBoosterView : MonoBehaviour
     public void Enable(float duration)
     {
         _spriteRenderer.enabled = true;
-        RunAnimation(duration);
+        PlayRunningAnimation(duration);
     }
 
     public void Disable() => _spriteRenderer.enabled = false;
@@ -34,7 +34,7 @@ public abstract class PlayerBoosterView : MonoBehaviour
         StartCoroutine(WaitFallingAnimation());
     }
 
-    protected virtual void RunAnimation(float targetDuration) => _animator.SetBool(IsRunningName, true);
+    protected virtual void PlayRunningAnimation(float targetDuration) => _animator.SetBool(IsRunningName, true);
 
     private IEnumerator WaitFallingAnimation()
     {

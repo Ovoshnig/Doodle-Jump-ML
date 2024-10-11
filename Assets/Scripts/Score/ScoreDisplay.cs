@@ -24,14 +24,22 @@ public class ScoreDisplay : MonoBehaviour
 
     private void OnDestroy() => _playerMover.NewHeightReached -= OnNewPlatformReached;
 
-    private void OnNewPlatformReached(float newHeight)
+    private void OnNewPlatformReached(float newHeight, bool usingBooster)
     {
-        float score = newHeight * _multiplier;
+        float targetScore = newHeight * _multiplier;
 
         if (_scoreCoroutine != null)
             StopCoroutine(_scoreCoroutine);
 
-        _scoreCoroutine = StartCoroutine(IncreaseScoreSmoothly(score));
+        if (usingBooster)
+        {
+            _score = targetScore;
+            Display();
+        }
+        else
+        {
+            _scoreCoroutine = StartCoroutine(IncreaseScoreSmoothly(targetScore));
+        }
     }
 
     private IEnumerator IncreaseScoreSmoothly(float targetScore)

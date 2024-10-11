@@ -5,7 +5,7 @@ using System.Collections;
 public class CameraMover : MonoBehaviour
 {
     [SerializeField] private PlayerMover _playerMover;
-    [SerializeField] private float _cameraVerticalOffset = 0f;
+    [SerializeField] private float _cameraVerticalOffset = 2f;
     [SerializeField] private float _cameraMoveSpeed = 2f;
 
     private Camera _mainCamera;
@@ -13,19 +13,27 @@ public class CameraMover : MonoBehaviour
 
     private void Awake() => _mainCamera = transform.GetComponent<Camera>();
 
-    private void OnEnable() => _playerMover.NewHeightReached += OnNewPlatformReached;
+    private void OnEnable() => _playerMover.NewHeightReached += OnNewHeightReached;
 
-    private void OnDisable() => _playerMover.NewHeightReached -= OnNewPlatformReached;
+    private void OnDisable() => _playerMover.NewHeightReached -= OnNewHeightReached;
 
-    private void OnNewPlatformReached(float newHeight)
+    private void OnNewHeightReached(float newHeight, bool usingBooster)
     {
         Vector3 targetPosition = transform.position;
-        targetPosition.y = newHeight + _mainCamera.orthographicSize + _cameraVerticalOffset;
+        targetPosition.y = newHeight;
 
         if (_cameraCoroutine != null)
             StopCoroutine(_cameraCoroutine);
 
-        _cameraCoroutine = StartCoroutine(MoveCameraSmoothly(targetPosition));
+        if (usingBooster)
+        {
+            transform.position = targetPosition;
+        }
+        else
+        {
+            targetPosition.y += _cameraVerticalOffset;
+            _cameraCoroutine = StartCoroutine(MoveCameraSmoothly(targetPosition));
+        }
     }
 
     private IEnumerator MoveCameraSmoothly(Vector3 targetPosition)
