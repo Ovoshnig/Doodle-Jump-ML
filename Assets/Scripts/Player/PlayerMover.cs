@@ -8,9 +8,11 @@ public class PlayerMover : MonoBehaviour
 {
     private const string HorizontalAxisName = "Horizontal";
 
-    [SerializeField, Min(0f)] private float _platformJumpForce = 1f;
-    [SerializeField, Min(0f)] private float _monsterJumpForce = 1f;
-    [SerializeField, Min(0f)] private float _horizontalSpeed = 1f;
+    [SerializeField, Min(0f)] private float _platformJumpForce = 7.4f;
+    [SerializeField, Min(0f)] private float _monsterJumpForce = 8.2f;
+    [SerializeField, Min(0f)] private float _horizontalSpeed = 4.8f;
+    [SerializeField, Min(0f)] private float _springDistance = 8f;
+    [SerializeField, Min(0f)] private float _staticBoosterSpeed = 4f;
     [SerializeField] private Sprite _normalSprite;
     [SerializeField] private Sprite _legsTuckedSprite;
 
@@ -126,6 +128,10 @@ public class PlayerMover : MonoBehaviour
                 Jump(monster.transform, _monsterJumpForce);
                 MonsterDowned?.Invoke();
             }
+            else if (collision.collider.TryGetComponent(out StaticBooster staticBooster))
+            {
+                StaticBoost(staticBooster);
+            }
         }
 
         if (collision.collider.TryGetComponent<Hole>(out _))
@@ -194,6 +200,29 @@ public class PlayerMover : MonoBehaviour
         playerBoosterView.StopRunningAnimation();
         Jump(transform, _platformJumpForce);
         EnableColliders();
+    }
+
+    private void StaticBoost(StaticBooster staticBooster)
+    {
+        if (staticBooster is Spring)
+            StartCoroutine(StaticBoostRoutine(_springDistance));
+    }
+
+    private IEnumerator StaticBoostRoutine(float distance)
+    {
+        float startPositionY = transform.position.y;
+        float targetPositionY = startPositionY + distance;
+        WaitForFixedUpdate waitForFixedUpdate = new();
+
+        while (transform.position.y < targetPositionY)
+        {
+            float positionY = transform.position.y;
+            _rigidbody.linearVelocityY = _staticBoosterSpeed;
+            _maxReachedHeight = positionY;
+            NewHeightReached(positionY, true);
+
+            yield return null;
+        }
     }
 
     private void EnableColliders()

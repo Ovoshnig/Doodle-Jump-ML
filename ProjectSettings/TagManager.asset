@@ -17,8 +17,8 @@ TagManager:
   - PlayerBody
   - Monster
   - Hole
-  - 
-  - 
+  - Booster
+  - StaticBooster
   - 
   - 
   - 

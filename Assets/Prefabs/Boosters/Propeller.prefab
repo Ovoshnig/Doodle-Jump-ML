@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5335736008278909638}
   - component: {fileID: 535132196182755849}
   - component: {fileID: 3607497657103953177}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Propeller
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -126,7 +126,7 @@ BoxCollider2D:
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0.49287546, y: 0.6}
     oldSize: {x: 0.61, y: 0.41}
     newSize: {x: 0.61, y: 0.41}
     adaptiveTilingThreshold: 0.5
@@ -147,4 +147,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e2685daad1bf6347b3791907310a11e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Distance: 50
