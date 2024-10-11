@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -21,10 +22,31 @@ public class MonsterGenerator : GeneratorBase
         _flyingMonsterPool = CreatePool(random == 0 ? _flyingMonster1Prefab : _flyingMonster2Prefab, monsterGroup);
         _walkingMonsterPool = CreatePool(_walkingMonsterPrefab, monsterGroup);
         _holePool = CreatePool(_holePrefab, monsterGroup);
+
+        List<GameObject> objects = new()
+        {
+            _flyingMonster1Prefab,
+            _flyingMonster2Prefab,
+            _walkingMonsterPrefab,
+            _holePrefab
+        };
+
+        float screenBoundX = Camera.ViewportToWorldPoint(new Vector2(1f, 0f)).x;
+
+        foreach (var @object in objects)
+        {
+            if (@object.TryGetComponent(out CapsuleCollider2D capsuleCollider))
+                ObjectBoundsX[@object.name] = screenBoundX - 0.5f * capsuleCollider.size.x * @object.transform.lossyScale.x;
+            else if (@object.TryGetComponent(out CircleCollider2D circleCollider))
+                ObjectBoundsX[@object.name] = screenBoundX - circleCollider.radius * @object.transform.lossyScale.x;
+        }
     }
 
     public override void Generate(float height)
     {
+        if (ActiveObjects.Count > 0)
+            return;
+
         IObjectPool<GameObject> pool;
         float random = Random.Range(0f, 1f);
 
@@ -41,12 +63,13 @@ public class MonsterGenerator : GeneratorBase
 
         GameObject monster = pool.Get();
         ActiveObjects[monster] = pool;
-        monster.transform.position = GetRandomPosition(height);
+        monster.transform.position = GetRandomPosition(monster, height);
     }
 
-    protected override Vector2 GetRandomPosition(float height)
+    private Vector2 GetRandomPosition(GameObject @object, float height)
     {
-        float x = Random.Range(-2.5f, 2.5f);
+        float boundX = ObjectBoundsX[@object.name];
+        float x = Random.Range(-boundX, boundX);
 
         return new Vector2(x, height);
     }
@@ -54,7 +77,13 @@ public class MonsterGenerator : GeneratorBase
     private ObjectPool<GameObject> CreatePool(GameObject prefab, Transform groupTransform)
     {
         return new ObjectPool<GameObject>(
-            createFunc: () => Instantiate(prefab, groupTransform),
+            createFunc: () =>
+            {
+                GameObject monster = Instantiate(prefab, groupTransform);
+                monster.name = prefab.name;
+
+                return monster;
+            },
             actionOnGet: hole => hole.SetActive(true),
             actionOnRelease: hole => hole.SetActive(false),
             actionOnDestroy: Destroy

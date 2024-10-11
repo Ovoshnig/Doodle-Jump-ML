@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -20,6 +21,21 @@ public class PlatformGenerator : GeneratorBase
         _normalPlatformPool = CreatePool(_normalPlatformPrefab, platformGroup);
         _movingPlatformPool = CreatePool(_movingPlatformPrefab, platformGroup);
         _disappearingPlatformPool = CreatePool(_disappearingPlatformPrefab, platformGroup);
+
+        List<GameObject> objects = new()
+        {
+            _normalPlatformPrefab,
+            _movingPlatformPrefab,
+            _disappearingPlatformPrefab
+        };
+
+        float screenBoundX = Camera.ViewportToWorldPoint(new Vector2(1f, 0f)).x;
+
+        foreach (var @object in objects)
+        {
+            BoxCollider2D collider = @object.GetComponent<BoxCollider2D>();
+            ObjectBoundsX[@object.name] = screenBoundX - 0.5f * collider.size.x * @object.transform.lossyScale.x;
+        }
     }
 
     public override void Generate(float height)
@@ -38,13 +54,13 @@ public class PlatformGenerator : GeneratorBase
 
         GameObject platform = pool.Get();
         ActiveObjects[platform] = pool;
-        platform.transform.position = GetRandomPosition(height);
+        platform.transform.position = GetRandomPosition(platform, height);
     }
 
     public Vector2 SpawnNormalPlatform(float height)
     {
         GameObject platform = _normalPlatformPool.Get();
-        Vector2 position = new(GetRandomPositionX(), height);
+        Vector2 position = new(GetRandomPositionX(_normalPlatformPrefab), height);
         platform.transform.position = position;
         ActiveObjects[platform] = _normalPlatformPool;
 
@@ -61,9 +77,14 @@ public class PlatformGenerator : GeneratorBase
         ActiveObjects.Remove(platformObject);
     }
 
-    protected override Vector2 GetRandomPosition(float height) => new(GetRandomPositionX(), height);
+    protected Vector2 GetRandomPosition(GameObject @object, float height) => new(GetRandomPositionX(@object), height);
 
-    private float GetRandomPositionX() => Random.Range(-2.3f, 2.3f);
+    private float GetRandomPositionX(GameObject @object)
+    {
+        float boundX = ObjectBoundsX[@object.name];
+
+        return Random.Range(-boundX, boundX);
+    }
 
     private ObjectPool<GameObject> CreatePool(GameObject prefab, Transform groupTransform)
     {
@@ -72,6 +93,7 @@ public class PlatformGenerator : GeneratorBase
             {
                 GameObject platform = Instantiate(prefab, groupTransform);
                 platform.GetComponent<Platform>().SetPlatformGenerator(this);
+                platform.name = prefab.name;
 
                 return platform;
             },

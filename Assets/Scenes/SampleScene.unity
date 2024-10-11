@@ -847,7 +847,6 @@ MonoBehaviour:
   _platformGenerator: {fileID: 1767775510}
   _monsterGenerator: {fileID: 1767775509}
   _boosterGenerator: {fileID: 1767775508}
-  _playerMover: {fileID: 2007441224}
 --- !u!1001 &2007441222
 PrefabInstance:
   m_ObjectHideFlags: 0

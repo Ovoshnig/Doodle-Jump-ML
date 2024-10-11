@@ -23,7 +23,7 @@ public class BoosterGenerator : GeneratorBase
 
     public override void Generate(float height)
     {
-        if (height < Settings.BoosterMinHeight)
+        if (ActiveObjects.Count > 0 || height < Settings.BoosterMinHeight)
             return;
 
         IObjectPool<GameObject> pool;
@@ -63,13 +63,6 @@ public class BoosterGenerator : GeneratorBase
         ActiveObjects.Remove(boosterObject);
     }
 
-    protected override Vector2 GetRandomPosition(float height)
-    {
-        float x = Random.Range(-2.5f, 2.5f);
-
-        return new Vector2(x, height);
-    }
-
     private ObjectPool<GameObject> CreatePool(GameObject prefab, Transform groupTransform)
     {
         return new ObjectPool<GameObject>(
@@ -77,6 +70,7 @@ public class BoosterGenerator : GeneratorBase
             {
                 GameObject booster = Instantiate(prefab, groupTransform);
                 booster.GetComponent<Booster>().SetBoosterGenerator(this);
+                booster.name = prefab.name;
 
                 return booster;
             },
