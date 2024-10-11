@@ -31,15 +31,7 @@ public abstract class PlayerBoosterView : MonoBehaviour
     public virtual void StopRunningAnimation()
     {
         _animator.SetBool(IsRunningName, false);
-        StartCoroutine(WaitFallingAnimation());
     }
 
     protected virtual void PlayRunningAnimation(float targetDuration) => _animator.SetBool(IsRunningName, true);
-
-    private IEnumerator WaitFallingAnimation()
-    {
-        yield return new WaitForSecondsRealtime(_fallingClip.length);
-
-        Disable();
-    }
 }
