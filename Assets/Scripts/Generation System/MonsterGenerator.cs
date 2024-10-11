@@ -13,15 +13,17 @@ public class MonsterGenerator : GeneratorBase
     private IObjectPool<GameObject> _walkingMonsterPool;
     private IObjectPool<GameObject> _holePool;
 
+    protected override Transform GroupTransform { get; set; }
+
     protected override void Awake()
     {
         base.Awake();
 
-        Transform monsterGroup = new GameObject("Monsters").transform;
+        GroupTransform = new GameObject("Monsters").transform;
         int random = Random.Range(0, 2);
-        _flyingMonsterPool = CreatePool(random == 0 ? _flyingMonster1Prefab : _flyingMonster2Prefab, monsterGroup);
-        _walkingMonsterPool = CreatePool(_walkingMonsterPrefab, monsterGroup);
-        _holePool = CreatePool(_holePrefab, monsterGroup);
+        _flyingMonsterPool = CreatePool(random == 0 ? _flyingMonster1Prefab : _flyingMonster2Prefab, GroupTransform);
+        _walkingMonsterPool = CreatePool(_walkingMonsterPrefab, GroupTransform);
+        _holePool = CreatePool(_holePrefab, GroupTransform);
 
         List<GameObject> objects = new()
         {

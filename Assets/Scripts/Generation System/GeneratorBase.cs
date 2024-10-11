@@ -10,6 +10,7 @@ public abstract class GeneratorBase : MonoBehaviour
     protected Dictionary<string, float> ObjectBoundsX { get; } = new();
     protected Dictionary<string, float> ObjectHalfSizesY { get; } = new();
     protected Dictionary<GameObject, IObjectPool<GameObject>> ActiveObjects { get; } = new();
+    protected abstract Transform GroupTransform { get; set; }
 
     protected virtual void Awake() => Camera = Camera.main;
 
@@ -31,9 +32,14 @@ public abstract class GeneratorBase : MonoBehaviour
             if (topViewportPosition.y < 0f)
             {
                 if (ActiveObjects.TryGetValue(activeObject, out IObjectPool<GameObject> pool))
+                {
+                    activeObject.transform.SetParent(GroupTransform);
                     pool.Release(activeObject);
+                }
                 else
+                {
                     Debug.LogError($"Unable to find object {activeObject} in active objects");
+                }
 
                 ActiveObjects.Remove(activeObject);
             }

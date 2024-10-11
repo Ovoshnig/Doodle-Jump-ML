@@ -11,13 +11,15 @@ public class BoosterGenerator : GeneratorBase
     private IObjectPool<GameObject> _jetpackPool;
     private PlatformGenerator _platformGenerator;
 
+    protected override Transform GroupTransform { get; set; }
+
     protected override void Awake()
     {
         base.Awake();
 
-        Transform boosterGroup = new GameObject("Boosters").transform;
-        _propellerPool = CreatePool(_propellerPrefab, boosterGroup);
-        _jetpackPool = CreatePool(_jetpackPrefab, boosterGroup);
+        GroupTransform = new GameObject("Boosters").transform;
+        _propellerPool = CreatePool(_propellerPrefab, GroupTransform);
+        _jetpackPool = CreatePool(_jetpackPrefab, GroupTransform);
 
         List<GameObject> objects = new()
         {

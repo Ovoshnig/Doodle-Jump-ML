@@ -6,6 +6,7 @@ public class WorldGenerator : MonoBehaviour
     [SerializeField] private PlatformGenerator _platformGenerator;
     [SerializeField] private MonsterGenerator _monsterGenerator;
     [SerializeField] private BoosterGenerator _boosterGenerator;
+    [SerializeField] private StaticBoosterGenerator _staticBoosterGenerator;
 
     private GeneratorBase[] _generators;
     private Camera _camera;
@@ -15,11 +16,19 @@ public class WorldGenerator : MonoBehaviour
 
     private void Start()
     {
-        _generators = new GeneratorBase[] { _platformGenerator, _monsterGenerator, _boosterGenerator };
+        _generators = new GeneratorBase[] 
+        { 
+            _platformGenerator, 
+            _monsterGenerator, 
+            _boosterGenerator 
+        };
 
         foreach (var generator in _generators)
             generator.SetSettings(_generationSettings);
 
+        _staticBoosterGenerator.SetSettings(_generationSettings);
+
+        _platformGenerator.SetStaticBoosterGenerator(_staticBoosterGenerator);
         _boosterGenerator.SetPlatformGenerator(_platformGenerator);
         GenerateInitialWorld();
     }
@@ -54,7 +63,9 @@ public class WorldGenerator : MonoBehaviour
     {
         foreach(var generator in _generators)
             generator.RemoveOffScreenElements();
+
+        _staticBoosterGenerator.RemoveOffScreenElements();
     }
 
-    private bool IsInCameraView(float height) => height < _camera.transform.position.y + 2 * _camera.orthographicSize;
+    private bool IsInCameraView(float height) => height < _camera.transform.position.y + 2f * _camera.orthographicSize;
 }

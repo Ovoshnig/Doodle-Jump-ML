@@ -44,6 +44,6 @@ public class DisappearingPlatform : Platform
 
         yield return new WaitForSeconds(_disableClip.length);
 
-        PlatformGenerator.ReleasePlatform(this);
+        PlatformGenerator.ReleaseDisappearingPlatform(this);
     }
 }

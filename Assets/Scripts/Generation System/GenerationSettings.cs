@@ -14,6 +14,10 @@ public class GenerationSettings : ScriptableObject
     [field: SerializeField] public float MovingPlatformMinHeight { get; private set; } = 20f;
     [field: SerializeField] public float DisappearingPlatformMinHeight { get; private set; } = 150f;
 
+    [Header("Static Booster Settings")]
+    [field: SerializeField] public float SpringOnNormalPlatformFrequency { get; private set; } = 0.05f;
+    [field: SerializeField] public float SpringOnMovingPlatformFrequency { get; private set; } = 0.03f;
+
     [Header("Monster Settings")]
     [field: SerializeField] public float FlyingMonsterFrequency { get; private set; } = 0.01f;
     [field: SerializeField] public float WalkingMonsterFrequency { get; private set; } = 0.005f;

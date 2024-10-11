@@ -9,18 +9,21 @@ public class PlatformGenerator : GeneratorBase
     [SerializeField] private GameObject _disappearingPlatformPrefab;
     [SerializeField] private GameObject _player;
 
+    private StaticBoosterGenerator _staticBoosterGenerator;
     private IObjectPool<GameObject> _normalPlatformPool;
     private IObjectPool<GameObject> _movingPlatformPool;
     private IObjectPool<GameObject> _disappearingPlatformPool;
+
+    protected override Transform GroupTransform { get; set; }
 
     protected override void Awake()
     {
         base.Awake();
 
-        Transform platformGroup = new GameObject("Platforms").transform;
-        _normalPlatformPool = CreatePool(_normalPlatformPrefab, platformGroup);
-        _movingPlatformPool = CreatePool(_movingPlatformPrefab, platformGroup);
-        _disappearingPlatformPool = CreatePool(_disappearingPlatformPrefab, platformGroup);
+        GroupTransform = new GameObject("Platforms").transform;
+        _normalPlatformPool = CreatePool(_normalPlatformPrefab, GroupTransform);
+        _movingPlatformPool = CreatePool(_movingPlatformPrefab, GroupTransform);
+        _disappearingPlatformPool = CreatePool(_disappearingPlatformPrefab, GroupTransform);
 
         List<GameObject> objects = new()
         {
@@ -40,6 +43,9 @@ public class PlatformGenerator : GeneratorBase
         }
     }
 
+    public void SetStaticBoosterGenerator(StaticBoosterGenerator generator) => 
+        _staticBoosterGenerator = generator;
+
     public override void Generate(float height)
     {
         IObjectPool<GameObject> pool;
@@ -56,7 +62,14 @@ public class PlatformGenerator : GeneratorBase
 
         GameObject platform = pool.Get();
         ActiveObjects[platform] = pool;
-        platform.transform.position = GetRandomPosition(platform, height);
+        Vector2 platformPosition = GetRandomPosition(platform, height);
+        platform.transform.position = platformPosition;
+
+        random = Random.Range(0f, 1f);
+
+        if (pool == _normalPlatformPool && random < Settings.SpringOnNormalPlatformFrequency
+            || pool == _movingPlatformPool && random < Settings.SpringOnMovingPlatformFrequency)
+            _staticBoosterGenerator.PlaceStaticBoosterAboutPlatform(platform);
     }
 
     public Vector2 SpawnNormalPlatform(float height)
@@ -72,9 +85,9 @@ public class PlatformGenerator : GeneratorBase
     public void PlacePlayerAboveFirstPlatform(Vector2 platformPosition) =>
         _player.transform.position = platformPosition + Vector2.up * 0.6f;
 
-    public void ReleasePlatform(DisappearingPlatform disappearingPlatform)
+    public void ReleaseDisappearingPlatform(DisappearingPlatform platform)
     {
-        GameObject platformObject = disappearingPlatform.gameObject;
+        GameObject platformObject = platform.gameObject;
         _disappearingPlatformPool.Release(platformObject);
         ActiveObjects.Remove(platformObject);
     }
