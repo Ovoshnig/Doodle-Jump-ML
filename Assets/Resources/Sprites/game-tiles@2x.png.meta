@@ -1060,7 +1060,7 @@ TextureImporter:
       name: game-tiles@2x_10
       rect:
         serializedVersion: 2
-        x: 298
+        x: 297
         y: 841
         width: 153
         height: 89

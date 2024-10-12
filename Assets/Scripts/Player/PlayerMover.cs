@@ -99,7 +99,7 @@ public class PlayerMover : MonoBehaviour
 
     private void OnBodyCollided(Collision2D collision)
     {
-        if (collision.collider.TryGetComponent<Monster>(out _))
+        if (collision.collider.TryGetComponent<MonsterBody>(out _))
         {
             CrashedIntoMonster?.Invoke();
             _rigidbody.linearVelocityY = 0f;
@@ -115,16 +115,19 @@ public class PlayerMover : MonoBehaviour
 
     private void OnLegsCollided(Collision2D collision)
     {
-        if (_rigidbody.linearVelocityY <= 0f)
+        Debug.Log(collision.collider.name);
+        Debug.Log(collision.contacts[0].normal.y);
+
+        if (collision.contacts[0].normal.y is > 0.9f and <= 1f)
         {
             if (collision.collider.TryGetComponent(out Platform platform))
             {
                 Jump(platform.transform, _platformJumpForce);
                 PlatformJumpedOff?.Invoke();
             }
-            else if (collision.collider.TryGetComponent(out Monster monster))
+            else if (collision.collider.TryGetComponent(out MonsterHead monsterHead))
             {
-                Jump(monster.transform, _monsterJumpForce);
+                Jump(monsterHead.transform, _monsterJumpForce);
                 MonsterDowned?.Invoke();
             }
             else if (collision.collider.TryGetComponent(out StaticBooster staticBooster))
