@@ -28,8 +28,7 @@ public abstract class StaticBooster : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.collider.TryGetComponent<PlayerLegs>(out _) 
-            && collision.gameObject.TryGetComponent(out Rigidbody2D rigidbody)
-            && rigidbody.linearVelocityY <= 0f)
+            && collision.contacts[0].normal.y < 0f)
         {
             _spriteRenderer.sprite = _expandedSpringSprite;
             _audioSource.Play();

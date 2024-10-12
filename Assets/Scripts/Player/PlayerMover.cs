@@ -103,13 +103,13 @@ public class PlayerMover : MonoBehaviour
         {
             CrashedIntoMonster?.Invoke();
             _rigidbody.linearVelocityY = 0f;
-            Lose();
+            DisableColliders();
         }
         else if (collision.collider.TryGetComponent<Hole>(out _))
         {
             FlewIntoHole?.Invoke();
             _rigidbody.linearVelocityY = 0f;
-            Lose();
+            DisableColliders();
         }
     }
 
@@ -137,7 +137,7 @@ public class PlayerMover : MonoBehaviour
         {
             FlewIntoHole?.Invoke();
             _rigidbody.linearVelocityY = 0f;
-            Lose();
+            DisableColliders();
         }
     }
 

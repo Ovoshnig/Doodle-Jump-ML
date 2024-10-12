@@ -15,6 +15,7 @@ public class WalkingMonster : Monster
     protected override void Awake()
     {
         base.Awake();
+
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _collider = GetComponent<CapsuleCollider2D>();
         _camera = Camera.main;
@@ -23,6 +24,7 @@ public class WalkingMonster : Monster
     protected override void Start()
     {
         base.Start();
+
         _colliderWidth = _collider.bounds.extents.x;
         _direction = Random.Range(0, 2) == 0 ? -1 : 1;
         _spriteRenderer.flipX = _direction == -1;

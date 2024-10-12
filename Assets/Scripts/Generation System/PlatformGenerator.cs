@@ -69,22 +69,15 @@ public class PlatformGenerator : GeneratorBase
         Vector2 platformPosition = GetRandomPosition(platform, height);
         platform.transform.position = platformPosition;
 
+        if (pool != _normalPlatformPool && pool != _movingPlatformPool)
+            return;
+
         random = Random.Range(0f, 1f);
 
-        if (pool == _normalPlatformPool)
-        {
-            if (random < 0.5f)
-                _boosterGenerator.PlaceBoosterAboutPlatform(platform);
-            else
-                _staticBoosterGenerator.PlaceStaticBoosterAboutPlatform(platform);
-        }
-        else if (pool == _movingPlatformPool)
-        {
-            if (random < 0.5f)
-                _boosterGenerator.PlaceBoosterAboutPlatform(platform);
-            else
-                _staticBoosterGenerator.PlaceStaticBoosterAboutPlatform(platform);
-        }
+        if (height > Settings.BoosterMinHeight && random < 0.5f)
+            _boosterGenerator.PlaceBoosterAboutPlatform(platform);
+        else
+            _staticBoosterGenerator.PlaceStaticBoosterAboutPlatform(platform);
     }
 
     public Vector2 SpawnNormalPlatform(float height)
