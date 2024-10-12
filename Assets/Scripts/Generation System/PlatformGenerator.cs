@@ -9,6 +9,7 @@ public class PlatformGenerator : GeneratorBase
     [SerializeField] private GameObject _disappearingPlatformPrefab;
     [SerializeField] private GameObject _player;
 
+    private BoosterGenerator _boosterGenerator;
     private StaticBoosterGenerator _staticBoosterGenerator;
     private IObjectPool<GameObject> _normalPlatformPool;
     private IObjectPool<GameObject> _movingPlatformPool;
@@ -43,6 +44,9 @@ public class PlatformGenerator : GeneratorBase
         }
     }
 
+    public void SetBoosterGenerator(BoosterGenerator generator) => 
+        _boosterGenerator = generator;
+
     public void SetStaticBoosterGenerator(StaticBoosterGenerator generator) => 
         _staticBoosterGenerator = generator;
 
@@ -67,9 +71,20 @@ public class PlatformGenerator : GeneratorBase
 
         random = Random.Range(0f, 1f);
 
-        if (pool == _normalPlatformPool && random < Settings.SpringOnNormalPlatformFrequency
-            || pool == _movingPlatformPool && random < Settings.SpringOnMovingPlatformFrequency)
-            _staticBoosterGenerator.PlaceStaticBoosterAboutPlatform(platform);
+        if (pool == _normalPlatformPool)
+        {
+            if (random < 0.5f)
+                _boosterGenerator.PlaceBoosterAboutPlatform(platform);
+            else
+                _staticBoosterGenerator.PlaceStaticBoosterAboutPlatform(platform);
+        }
+        else if (pool == _movingPlatformPool)
+        {
+            if (random < 0.5f)
+                _boosterGenerator.PlaceBoosterAboutPlatform(platform);
+            else
+                _staticBoosterGenerator.PlaceStaticBoosterAboutPlatform(platform);
+        }
     }
 
     public Vector2 SpawnNormalPlatform(float height)

@@ -5,6 +5,7 @@ using UnityEngine.Pool;
 public class StaticBoosterGenerator : GeneratorBase
 {
     [SerializeField] private GameObject _springPrefab;
+    [SerializeField] private Vector2 _springOffset = new(0.2f, 0.13f);
 
     private IObjectPool<GameObject> _springPool;
     private GameObject _lastActiveObject;
@@ -36,6 +37,12 @@ public class StaticBoosterGenerator : GeneratorBase
 
     public override void Generate(float height)
     {
+        _lastActiveObject = null;
+        float random = Random.Range(0f, 1f);
+
+        if (random > 2f * Settings.SpringFrequency)
+            return;
+
         GameObject spring = _springPool.Get();
         ActiveObjects[spring] = _springPool;
         _lastActiveObject = spring;
@@ -46,8 +53,15 @@ public class StaticBoosterGenerator : GeneratorBase
         Vector2 platformPosition = platform.transform.position;
         Generate(platformPosition.y);
         GameObject spring = _lastActiveObject;
+
+        if (spring == null)
+            return;
+
         spring.transform.SetParent(platform.transform);
-        spring.transform.localPosition = new Vector2(0.2f, 0.12f);
+
+        float signX = Random.Range(0, 2) == 0 ? -1 : 1;
+        _springOffset.x = signX * Mathf.Abs(_springOffset.x);
+        spring.transform.localPosition = _springOffset;
     }
 
     private ObjectPool<GameObject> CreatePool(GameObject prefab, Transform groupTransform)

@@ -26,10 +26,11 @@ public class WorldGenerator : MonoBehaviour
         foreach (var generator in _generators)
             generator.SetSettings(_generationSettings);
 
+        _boosterGenerator.SetSettings(_generationSettings);
         _staticBoosterGenerator.SetSettings(_generationSettings);
 
+        _platformGenerator.SetBoosterGenerator(_boosterGenerator);
         _platformGenerator.SetStaticBoosterGenerator(_staticBoosterGenerator);
-        _boosterGenerator.SetPlatformGenerator(_platformGenerator);
         GenerateInitialWorld();
     }
 
@@ -64,6 +65,7 @@ public class WorldGenerator : MonoBehaviour
         foreach(var generator in _generators)
             generator.RemoveOffScreenElements();
 
+        _boosterGenerator.RemoveOffScreenElements();
         _staticBoosterGenerator.RemoveOffScreenElements();
     }
 

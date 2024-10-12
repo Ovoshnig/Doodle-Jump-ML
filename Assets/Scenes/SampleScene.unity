@@ -800,6 +800,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _propellerPrefab: {fileID: 4173846918800045977, guid: 9b13313b48fd79b49bc04ec7549ab14b, type: 3}
   _jetpackPrefab: {fileID: 779933932178025430, guid: ea49a323bd8b9e54fa493d5bb39f1575, type: 3}
+  _propellerOffset: {x: 0.2, y: 0.4}
+  _jetpackOffset: {x: 0.2, y: 0.5}
 --- !u!114 &1767775509
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -862,6 +864,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _springPrefab: {fileID: 2471307339439140924, guid: 75b2a8251d572b543a6c49cc6a0d5f9b, type: 3}
+  _springOffset: {x: 0.2, y: 0.13}
 --- !u!1001 &2007441222
 PrefabInstance:
   m_ObjectHideFlags: 0
