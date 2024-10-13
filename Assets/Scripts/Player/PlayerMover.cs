@@ -5,6 +5,7 @@ using System.Collections;
 [RequireComponent(typeof(SpriteRenderer))]
 [RequireComponent(typeof(Collider2D))]
 [RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(PlayerCollisionHandler))]
 public class PlayerMover : MonoBehaviour
 {
     private const string HorizontalAxisName = "Horizontal";
@@ -17,8 +18,9 @@ public class PlayerMover : MonoBehaviour
     [SerializeField] private Sprite _legsTuckedSprite;
 
     private SpriteRenderer _spriteRenderer;
-    private Rigidbody2D _rigidbody;
     private Collider2D _collider;
+    private Rigidbody2D _rigidbody;
+    private PlayerCollisionHandler _collisionHandler;
     private PlayerPropeller _playerPropeller;
     private PlayerJetpack _playerJetpack;
     private PlayerPropellerView _playerPropellerView;
@@ -28,18 +30,15 @@ public class PlayerMover : MonoBehaviour
     private float _maxReachedHeight = 0f;
     private bool _isLost = false;
 
-    public event Action PlatformJumpedOff;
     public event Action<float, bool> NewHeightReached;
     public event Action Lost;
-    public event Action CrashedIntoMonster;
-    public event Action FlewIntoHole;
-    public event Action MonsterDowned;
 
     private void Awake()
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _collider = GetComponent<BoxCollider2D>();
         _rigidbody = GetComponent<Rigidbody2D>();
+        _collisionHandler = GetComponent<PlayerCollisionHandler>();
 
         _playerPropeller = GetComponentInChildren<PlayerPropeller>();
         _playerJetpack = GetComponentInChildren<PlayerJetpack>();
@@ -47,9 +46,26 @@ public class PlayerMover : MonoBehaviour
         _playerJetpackView = GetComponentInChildren<PlayerJetpackView>();
 
         _camera = Camera.main;
+
+        _collisionHandler.PlatformJumpedOff += OnPlatformJumpedOff;
+        _collisionHandler.MonsterDowned += OnMonsterDowned;
+        _collisionHandler.CrashedIntoMonster += OnCrashedIntoMonster;
+        _collisionHandler.FlewIntoHole += OnFlewIntoHole;
+        _collisionHandler.BoosterUsed += OnBoosterUsed;
+        _collisionHandler.StaticBoosterUsed += OnStaticBoosterUsed;
     }
 
     private void Start() => NewHeightReached?.Invoke(_maxReachedHeight, false);
+
+    private void OnDestroy()
+    {
+        _collisionHandler.PlatformJumpedOff -= OnPlatformJumpedOff;
+        _collisionHandler.MonsterDowned -= OnMonsterDowned;
+        _collisionHandler.CrashedIntoMonster -= OnCrashedIntoMonster;
+        _collisionHandler.FlewIntoHole -= OnFlewIntoHole;
+        _collisionHandler.BoosterUsed -= OnBoosterUsed;
+        _collisionHandler.StaticBoosterUsed -= OnStaticBoosterUsed;
+    }
 
     private void Update()
     {
@@ -81,62 +97,33 @@ public class PlayerMover : MonoBehaviour
 
     private void FixedUpdate() => _rigidbody.linearVelocityX = _horizontalInput * _horizontalSpeed;
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnPlatformJumpedOff(float height) => Jump(height, _platformJumpForce);
+
+    private void OnMonsterDowned(float height) => Jump(height, _monsterJumpForce);
+
+    private void OnCrashedIntoMonster()
     {
-        ContactPoint2D contact = collision.contacts[0];
-        Vector2 collisionNormal = contact.normal;
-
-        if (collision.collider.TryGetComponent(out Platform platform))
-        {
-            if (collisionNormal.y > 0.5f)
-            {
-                Jump(platform.transform, _platformJumpForce);
-                PlatformJumpedOff?.Invoke();
-            }
-        }
-        else if (collision.collider.TryGetComponent(out StaticBooster staticBooster))
-        {
-            if (collisionNormal.y > 0.5f)
-                StaticBoost(staticBooster);
-        }
-        
-        if (collision.collider.TryGetComponent(out Monster monster))
-        {
-            if (collisionNormal.y > 0.5f)
-            {
-                Jump(monster.transform, _monsterJumpForce);
-                MonsterDowned?.Invoke();
-            }
-            else
-            {
-                CrashedIntoMonster?.Invoke();
-                _rigidbody.linearVelocityY = 0f;
-                _collider.enabled = false;
-            }
-        }
-
-        if (collision.collider.TryGetComponent<Hole>(out _))
-        {
-            FlewIntoHole?.Invoke();
-            _rigidbody.linearVelocityY = 0f;
-            _collider.enabled = false;
-        }
+        _rigidbody.linearVelocityY = 0f;
+        _collider.enabled = false;
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnFlewIntoHole()
     {
-        if (collision.TryGetComponent(out Booster booster))
-            Boost(booster);
+        _rigidbody.linearVelocityY = 0f;
+        _collider.enabled = false;
     }
 
-    private void Jump(Transform collisionTransform, float force = 1f)
+    private void OnBoosterUsed(Booster booster) => Boost(booster);
+
+    private void OnStaticBoosterUsed(StaticBooster staticBooster) => StaticBoost(staticBooster);
+
+    private void Jump(float height, float force = 1f)
     {
         _rigidbody.AddForceY(force, ForceMode2D.Impulse);
-        float collisionPositionY = collisionTransform.position.y;
 
-        if (collisionPositionY > _maxReachedHeight)
+        if (height > _maxReachedHeight)
         {
-            _maxReachedHeight = collisionPositionY;
+            _maxReachedHeight = height;
             NewHeightReached?.Invoke(_maxReachedHeight, false);
         }
     }
@@ -173,7 +160,7 @@ public class PlayerMover : MonoBehaviour
         }
 
         playerBoosterView.StopRunningAnimation();
-        Jump(transform, _platformJumpForce);
+        Jump(transform.position.y, _platformJumpForce);
         _collider.enabled = true;
     }
 

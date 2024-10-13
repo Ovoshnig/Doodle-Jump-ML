@@ -257,6 +257,7 @@ GameObject:
   - component: {fileID: 6727217633472968736}
   - component: {fileID: 4946911657120307609}
   - component: {fileID: -8429920006234170566}
+  - component: {fileID: 1241600982181581526}
   - component: {fileID: 4854572935135823801}
   m_Layer: 6
   m_Name: Doodler
@@ -525,6 +526,18 @@ MonoBehaviour:
   _horizontalSpeed: 4.8
   _normalSprite: {fileID: -6721728136321296765, guid: 6ea839368826a6146a1e487f7c90f93e, type: 3}
   _legsTuckedSprite: {fileID: 1984921996, guid: 6ea839368826a6146a1e487f7c90f93e, type: 3}
+--- !u!114 &1241600982181581526
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2193142091735979570}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a8e5ebd2b957224aa427bc063eba020, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &4854572935135823801
 MonoBehaviour:
   m_ObjectHideFlags: 0

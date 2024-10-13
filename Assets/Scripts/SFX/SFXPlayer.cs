@@ -11,50 +11,49 @@ public class SFXPlayer : MonoBehaviour
     
     private AudioSource _audioSource;
     private PlayerMover _playerMover;
+    private PlayerCollisionHandler _collisionHandler;
 
     private void Awake()
     {
         _audioSource = GetComponent<AudioSource>();
         _playerMover = GetComponent<PlayerMover>();
+        _collisionHandler = GetComponent<PlayerCollisionHandler>();
 
-        _playerMover.PlatformJumpedOff += OnPlatformJumpedOff;
+        _collisionHandler.PlatformJumpedOff += OnPlatformJumpedOff;
+        _collisionHandler.MonsterDowned += OnMonsterDowned;
+        _collisionHandler.CrashedIntoMonster += OnCrashedIntoMonster;
+        _collisionHandler.FlewIntoHole += OnFlewIntoHole;
         _playerMover.Lost += OnLost;
-        _playerMover.CrashedIntoMonster += OnCrashedIntoMonster;
-        _playerMover.FlewIntoHole += OnFlewIntoHole;
-        _playerMover.MonsterDowned += OnMonsterDowned;
     }
 
     private void OnDestroy()
     {
-        _playerMover.PlatformJumpedOff -= OnPlatformJumpedOff;
+        _collisionHandler.PlatformJumpedOff -= OnPlatformJumpedOff;
+        _collisionHandler.MonsterDowned -= OnMonsterDowned;
+        _collisionHandler.CrashedIntoMonster -= OnCrashedIntoMonster;
+        _collisionHandler.FlewIntoHole -= OnFlewIntoHole;
         _playerMover.Lost -= OnLost;
-        _playerMover.CrashedIntoMonster -= OnCrashedIntoMonster;
-        _playerMover.FlewIntoHole -= OnFlewIntoHole;
-        _playerMover.MonsterDowned -= OnMonsterDowned;
     }
 
-    private void OnPlatformJumpedOff()
+    private void OnPlatformJumpedOff(float height)
     {
         _audioSource.clip = _jumpClip;
         _audioSource.Play();
     }
 
-    private void OnLost()
+    private void OnMonsterDowned(float height)
     {
-        if (_audioSource.clip != _loseClip)
-        {
-            _audioSource.clip = _loseClip;
-            _audioSource.Play();
-        }
+        _audioSource.clip = _monsterDownClip;
+        _audioSource.PlayOneShot(_monsterDownClip);
     }
 
     private void OnCrashedIntoMonster() => _audioSource.PlayOneShot(_crashedIntoMonsterClip, 1.5f);
 
     private void OnFlewIntoHole() => _audioSource.PlayOneShot(_flewIntoHoleClip, 1.5f);
 
-    private void OnMonsterDowned()
+    private void OnLost()
     {
-        _audioSource.clip = _monsterDownClip;
-        _audioSource.PlayOneShot(_monsterDownClip);
+        _audioSource.clip = _loseClip;
+        _audioSource.Play();
     }
 }
