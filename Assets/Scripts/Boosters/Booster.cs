@@ -6,8 +6,7 @@ public abstract class Booster : MonoBehaviour
 
     protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.TryGetComponent(out PlayerBody _)
-            || collision.TryGetComponent(out PlayerLegs _))
+        if (collision.TryGetComponent(out PlayerMover _))
             _boosterGenerator.ReleaseBooster(this);
     }
 

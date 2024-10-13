@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 
 [RequireComponent(typeof(SpriteRenderer))]
+[RequireComponent(typeof(Collider2D))]
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerMover : MonoBehaviour
 {
@@ -17,10 +18,7 @@ public class PlayerMover : MonoBehaviour
 
     private SpriteRenderer _spriteRenderer;
     private Rigidbody2D _rigidbody;
-    private Collider2D _bodyCollider;
-    private Collider2D _legsCollider;
-    private PlayerBody _playerBody;
-    private PlayerLegs _playerLegs;
+    private Collider2D _collider;
     private PlayerPropeller _playerPropeller;
     private PlayerJetpack _playerJetpack;
     private PlayerPropellerView _playerPropellerView;
@@ -40,32 +38,18 @@ public class PlayerMover : MonoBehaviour
     private void Awake()
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
+        _collider = GetComponent<BoxCollider2D>();
         _rigidbody = GetComponent<Rigidbody2D>();
-        _bodyCollider = GetComponentInChildren<CapsuleCollider2D>();
-        _legsCollider = GetComponentInChildren<BoxCollider2D>();
-        _playerBody = GetComponentInChildren<PlayerBody>();
-        _playerLegs = GetComponentInChildren<PlayerLegs>();
+
         _playerPropeller = GetComponentInChildren<PlayerPropeller>();
         _playerJetpack = GetComponentInChildren<PlayerJetpack>();
         _playerPropellerView = GetComponentInChildren<PlayerPropellerView>();
         _playerJetpackView = GetComponentInChildren<PlayerJetpackView>();
-        _camera = Camera.main;
 
-        _playerBody.Collided += OnBodyCollided;
-        _playerBody.Triggered += OnBodyTriggered;
-        _playerLegs.Collided += OnLegsCollided;
-        _playerLegs.Triggered += OnLegsTriggered;
+        _camera = Camera.main;
     }
 
     private void Start() => NewHeightReached?.Invoke(_maxReachedHeight, false);
-
-    private void OnDestroy()
-    {
-        _playerBody.Collided -= OnBodyCollided;
-        _playerBody.Triggered -= OnBodyTriggered;
-        _playerLegs.Collided -= OnLegsCollided;
-        _playerLegs.Triggered -= OnLegsTriggered;
-    }
 
     private void Update()
     {
@@ -97,42 +81,37 @@ public class PlayerMover : MonoBehaviour
 
     private void FixedUpdate() => _rigidbody.linearVelocityX = _horizontalInput * _horizontalSpeed;
 
-    private void OnBodyCollided(Collision2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.collider.TryGetComponent<MonsterBody>(out _))
-        {
-            CrashedIntoMonster?.Invoke();
-            _rigidbody.linearVelocityY = 0f;
-            DisableColliders();
-        }
-        else if (collision.collider.TryGetComponent<Hole>(out _))
-        {
-            FlewIntoHole?.Invoke();
-            _rigidbody.linearVelocityY = 0f;
-            DisableColliders();
-        }
-    }
+        ContactPoint2D contact = collision.contacts[0];
+        Vector2 collisionNormal = contact.normal;
 
-    private void OnLegsCollided(Collision2D collision)
-    {
-        Debug.Log(collision.collider.name);
-        Debug.Log(collision.contacts[0].normal.y);
-
-        if (collision.contacts[0].normal.y is > 0.9f and <= 1f)
+        if (collision.collider.TryGetComponent(out Platform platform))
         {
-            if (collision.collider.TryGetComponent(out Platform platform))
+            if (collisionNormal.y > 0.5f)
             {
                 Jump(platform.transform, _platformJumpForce);
                 PlatformJumpedOff?.Invoke();
             }
-            else if (collision.collider.TryGetComponent(out MonsterHead monsterHead))
+        }
+        else if (collision.collider.TryGetComponent(out StaticBooster staticBooster))
+        {
+            if (collisionNormal.y > 0.5f)
+                StaticBoost(staticBooster);
+        }
+        
+        if (collision.collider.TryGetComponent(out Monster monster))
+        {
+            if (collisionNormal.y > 0.5f)
             {
-                Jump(monsterHead.transform, _monsterJumpForce);
+                Jump(monster.transform, _monsterJumpForce);
                 MonsterDowned?.Invoke();
             }
-            else if (collision.collider.TryGetComponent(out StaticBooster staticBooster))
+            else
             {
-                StaticBoost(staticBooster);
+                CrashedIntoMonster?.Invoke();
+                _rigidbody.linearVelocityY = 0f;
+                _collider.enabled = false;
             }
         }
 
@@ -140,19 +119,13 @@ public class PlayerMover : MonoBehaviour
         {
             FlewIntoHole?.Invoke();
             _rigidbody.linearVelocityY = 0f;
-            DisableColliders();
+            _collider.enabled = false;
         }
     }
 
-    private void OnBodyTriggered(Collider2D collider)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collider.TryGetComponent(out Booster booster))
-            Boost(booster);
-    }
-
-    private void OnLegsTriggered(Collider2D collider)
-    {
-        if (collider.TryGetComponent(out Booster booster))
+        if (collision.TryGetComponent(out Booster booster))
             Boost(booster);
     }
 
@@ -173,7 +146,7 @@ public class PlayerMover : MonoBehaviour
         if (_isLost)
             return;
 
-        DisableColliders();
+        _collider.enabled = false;
         _isLost = true;
         Lost?.Invoke();
     }
@@ -190,7 +163,7 @@ public class PlayerMover : MonoBehaviour
     {
         float duration = playerBooster.Run();
         playerBoosterView.Enable(duration);
-        DisableColliders();
+        _collider.enabled = false;
 
         while (playerBooster.IsRunning)
         {
@@ -201,7 +174,7 @@ public class PlayerMover : MonoBehaviour
 
         playerBoosterView.StopRunningAnimation();
         Jump(transform, _platformJumpForce);
-        EnableColliders();
+        _collider.enabled = true;
     }
 
     private void StaticBoost(StaticBooster staticBooster)
@@ -222,17 +195,5 @@ public class PlayerMover : MonoBehaviour
 
             yield return null;
         }
-    }
-
-    private void EnableColliders()
-    {
-        _bodyCollider.enabled = true;
-        _legsCollider.enabled = true;
-    }
-
-    private void DisableColliders()
-    {
-        _bodyCollider.enabled = false;
-        _legsCollider.enabled = false;
     }
 }

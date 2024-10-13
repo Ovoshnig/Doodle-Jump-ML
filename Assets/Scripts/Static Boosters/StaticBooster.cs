@@ -27,12 +27,17 @@ public abstract class StaticBooster : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.collider.TryGetComponent<PlayerLegs>(out _) 
-            && collision.contacts[0].normal.y < 0f)
+        ContactPoint2D contact = collision.contacts[0];
+        Vector2 collisionNormal = contact.normal;
+
+        if (collision.collider.TryGetComponent<PlayerMover>(out _))
         {
-            _spriteRenderer.sprite = _expandedSpringSprite;
-            _audioSource.Play();
-            _collider.enabled = false;
+            if (collisionNormal.y < -0.5f)
+            {
+                _spriteRenderer.sprite = _expandedSpringSprite;
+                _audioSource.Play();
+                _collider.enabled = false;
+            }
         }
     }
 }
