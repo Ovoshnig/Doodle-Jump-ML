@@ -93,13 +93,6 @@ public class PlatformGenerator : GeneratorBase
     public void PlacePlayerAboveFirstPlatform(Vector2 platformPosition) =>
         _player.transform.position = platformPosition + Vector2.up * 0.6f;
 
-    public void ReleaseDisappearingPlatform(DisappearingPlatform platform)
-    {
-        GameObject platformObject = platform.gameObject;
-        _disappearingPlatformPool.Release(platformObject);
-        ActiveObjects.Remove(platformObject);
-    }
-
     protected Vector2 GetRandomPosition(GameObject @object, float height) => new(GetRandomPositionX(@object), height);
 
     private float GetRandomPositionX(GameObject @object)
@@ -115,7 +108,6 @@ public class PlatformGenerator : GeneratorBase
             createFunc: () =>
             {
                 GameObject platform = Instantiate(prefab, groupTransform);
-                platform.GetComponent<Platform>().SetPlatformGenerator(this);
                 platform.name = prefab.name;
 
                 return platform;

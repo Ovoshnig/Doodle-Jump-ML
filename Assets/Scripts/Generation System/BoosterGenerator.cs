@@ -87,26 +87,12 @@ public class BoosterGenerator : GeneratorBase
         }
     }
 
-    public void ReleaseBooster(Booster booster)
-    {
-        GameObject boosterObject = booster.gameObject;
-        boosterObject.transform.SetParent(GroupTransform);
-
-        if (booster is Propeller)
-            _propellerPool.Release(boosterObject);
-        else if (booster is Jetpack)
-            _jetpackPool.Release(boosterObject);
-
-        ActiveObjects.Remove(boosterObject);
-    }
-
     private ObjectPool<GameObject> CreatePool(GameObject prefab, Transform groupTransform)
     {
         return new ObjectPool<GameObject>(
             createFunc: () =>
             {
                 GameObject booster = Instantiate(prefab, groupTransform);
-                booster.GetComponent<Booster>().SetBoosterGenerator(this);
                 booster.name = prefab.name;
 
                 return booster;

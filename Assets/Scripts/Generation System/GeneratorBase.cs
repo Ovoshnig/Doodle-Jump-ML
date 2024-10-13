@@ -29,7 +29,7 @@ public abstract class GeneratorBase : MonoBehaviour
             Vector2 topPosition = new(position.x, position.y + ObjectHalfSizesY[activeObject.name]);
             Vector2 topViewportPosition = Camera.WorldToViewportPoint(topPosition);
 
-            if (topViewportPosition.y < 0f)
+            if (topViewportPosition.y < 0f || !activeObject.activeSelf)
             {
                 if (ActiveObjects.TryGetValue(activeObject, out IObjectPool<GameObject> pool))
                 {
