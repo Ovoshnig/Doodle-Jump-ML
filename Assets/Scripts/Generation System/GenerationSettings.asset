@@ -20,7 +20,7 @@ MonoBehaviour:
   <MovingPlatformMinHeight>k__BackingField: 30
   <DisappearingPlatformMinHeight>k__BackingField: 150
   <PropellerFrequency>k__BackingField: 0.01
-  <JetpackFrequency>k__BackingField: 0.007
+  <JetpackFrequency>k__BackingField: 0.107
   <BoosterMinHeight>k__BackingField: 20
   <SpringFrequency>k__BackingField: 0.05
   <FlyingMonsterFrequency>k__BackingField: 0.01

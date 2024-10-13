@@ -777,7 +777,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf7586cebd1c9f74b8d41d8ac1abf5f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _runningClip: {fileID: 7400000, guid: d4a5600b3a3bbd04493a82ba4edcd4fa, type: 2}
 --- !u!114 &7186168808579845046
 MonoBehaviour:
   m_ObjectHideFlags: 0
