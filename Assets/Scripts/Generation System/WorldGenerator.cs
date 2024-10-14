@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class WorldGenerator : MonoBehaviour
@@ -7,12 +8,15 @@ public class WorldGenerator : MonoBehaviour
     [SerializeField] private MonsterGenerator _monsterGenerator;
     [SerializeField] private BoosterGenerator _boosterGenerator;
     [SerializeField] private StaticBoosterGenerator _staticBoosterGenerator;
+    [SerializeField] private PlayerMover _playerMover;
 
     private GeneratorBase[] _generators;
     private Camera _camera;
     private float _currentHeight = 0f;
 
     private void Awake() => _camera = Camera.main;
+
+    private void OnEnable() => _playerMover.EpisodeBegan += OnEpisodeBegan;
 
     private void Start()
     {
@@ -31,8 +35,9 @@ public class WorldGenerator : MonoBehaviour
 
         _platformGenerator.SetBoosterGenerator(_boosterGenerator);
         _platformGenerator.SetStaticBoosterGenerator(_staticBoosterGenerator);
-        GenerateInitialWorld();
     }
+
+    private void OnDisable() => _playerMover.EpisodeBegan -= OnEpisodeBegan;
 
     private void Update()
     {
@@ -42,14 +47,14 @@ public class WorldGenerator : MonoBehaviour
         RemoveOffScreenElements();
     }
 
-    private void GenerateInitialWorld()
+    private void OnEpisodeBegan()
     {
-        Vector2 position = _platformGenerator.SpawnNormalPlatform(_currentHeight);
-        _platformGenerator.PlacePlayerAboveFirstPlatform(position);
-        _currentHeight += Random.Range(_generationSettings.MinimalSpacing, _generationSettings.MaximumSpacing);
+        foreach (var generator in _generators)
+            generator.ReleaseAllActiveElements();
 
-        while (IsInCameraView(_currentHeight))
-            GenerateNewElements();
+        _currentHeight = 0f;
+        Vector2 position = _platformGenerator.SpawnNormalPlatform(ref _currentHeight);
+        _platformGenerator.PlacePlayerAboveFirstPlatform(position);
     }
 
     private void GenerateNewElements()

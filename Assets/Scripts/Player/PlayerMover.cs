@@ -1,12 +1,15 @@
 using UnityEngine;
+using Unity.MLAgents;
 using System;
 using System.Collections;
+using Unity.MLAgents.Actuators;
+using Unity.MLAgents.Sensors;
 
 [RequireComponent(typeof(SpriteRenderer))]
 [RequireComponent(typeof(Collider2D))]
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(PlayerCollisionHandler))]
-public class PlayerMover : MonoBehaviour
+public class PlayerMover : Agent
 {
     private const string HorizontalAxisName = "Horizontal";
 
@@ -14,6 +17,7 @@ public class PlayerMover : MonoBehaviour
     [SerializeField, Min(0f)] private float _monsterJumpForce = 8.2f;
     [SerializeField, Min(0f)] private float _springJumpForce = 20f;
     [SerializeField, Min(0f)] private float _horizontalSpeed = 4.8f;
+    [SerializeField, Min(0f)] private float _loseDuration = 0f;
     [SerializeField] private Sprite _normalSprite;
     [SerializeField] private Sprite _legsTuckedSprite;
 
@@ -26,10 +30,10 @@ public class PlayerMover : MonoBehaviour
     private PlayerPropellerView _playerPropellerView;
     private PlayerJetpackView _playerJetpackView;
     private Camera _camera;
-    private float _horizontalInput = 0f;
     private float _maxReachedHeight = 0f;
     private bool _isLost = false;
 
+    public event Action EpisodeBegan;
     public event Action<float, bool> NewHeightReached;
     public event Action Lost;
 
@@ -55,8 +59,6 @@ public class PlayerMover : MonoBehaviour
         _collisionHandler.StaticBoosterUsed += OnStaticBoosterUsed;
     }
 
-    private void Start() => NewHeightReached?.Invoke(_maxReachedHeight, false);
-
     private void OnDestroy()
     {
         _collisionHandler.PlatformJumpedOff -= OnPlatformJumpedOff;
@@ -69,17 +71,8 @@ public class PlayerMover : MonoBehaviour
 
     private void Update()
     {
-        _horizontalInput = Input.GetAxis(HorizontalAxisName);
         Vector2 position = transform.position;
-        Vector3 scale = transform.localScale;
         Vector3 viewportPosition = _camera.WorldToViewportPoint(position);
-
-        if (_horizontalInput > 0f && scale.x > 0f)
-            scale.x = -Mathf.Abs(scale.x);
-        else if (_horizontalInput < 0f && scale.x < 0f)
-            scale.x = Mathf.Abs(scale.x);
-
-        transform.localScale = scale;
 
         if (viewportPosition.x < 0f || viewportPosition.x > 1f)
         {
@@ -95,7 +88,43 @@ public class PlayerMover : MonoBehaviour
         _spriteRenderer.sprite = _rigidbody.linearVelocityY > 5f ? _legsTuckedSprite : _normalSprite;
     }
 
-    private void FixedUpdate() => _rigidbody.linearVelocityX = _horizontalInput * _horizontalSpeed;
+    public override void OnEpisodeBegin()
+    {
+        _collider.enabled = true;
+        _rigidbody.linearVelocity = Vector2.zero;
+        _maxReachedHeight = 0f;
+        _isLost = false;
+
+        EpisodeBegan?.Invoke();
+    }
+
+    public override void CollectObservations(VectorSensor sensor)
+    {
+        Vector2 position = transform.position;
+
+        sensor.AddObservation(position);
+        sensor.AddObservation(_rigidbody.linearVelocity);
+    }
+
+    public override void OnActionReceived(ActionBuffers actions)
+    {
+        float moveX = actions.DiscreteActions[0] - 1;
+        _rigidbody.linearVelocityX = moveX * _horizontalSpeed;
+        Vector3 scale = transform.localScale;
+
+        if (moveX > 0f && scale.x > 0f)
+            scale.x = -Mathf.Abs(scale.x);
+        else if (moveX < 0f && scale.x < 0f)
+            scale.x = Mathf.Abs(scale.x);
+
+        transform.localScale = scale;
+    }
+
+    public override void Heuristic(in ActionBuffers actionsOut)
+    {
+        ActionSegment<int> discreteActions = actionsOut.DiscreteActions;
+        discreteActions[0] = (int)Input.GetAxisRaw(HorizontalAxisName) + 1;
+    }
 
     private void OnPlatformJumpedOff(float height) => Jump(height, _platformJumpForce);
 
@@ -136,6 +165,14 @@ public class PlayerMover : MonoBehaviour
         _collider.enabled = false;
         _isLost = true;
         Lost?.Invoke();
+        StartCoroutine(WaitLoseDuration());
+    }
+
+    private IEnumerator WaitLoseDuration()
+    {
+        yield return new WaitForSeconds(_loseDuration);
+
+        EndEpisode();
     }
 
     private void Boost(Booster booster)

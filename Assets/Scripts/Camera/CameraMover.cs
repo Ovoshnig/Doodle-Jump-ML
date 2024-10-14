@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System;
 
 [RequireComponent(typeof(Camera))]
 public class CameraMover : MonoBehaviour
@@ -10,9 +11,25 @@ public class CameraMover : MonoBehaviour
 
     private Coroutine _cameraCoroutine;
 
-    private void OnEnable() => _playerMover.NewHeightReached += OnNewHeightReached;
+    private void OnEnable()
+    {
+        _playerMover.EpisodeBegan += OnEpisodeBegan;
+        _playerMover.NewHeightReached += OnNewHeightReached;
+    }
 
-    private void OnDisable() => _playerMover.NewHeightReached -= OnNewHeightReached;
+
+    private void OnDisable()
+    {
+        _playerMover.EpisodeBegan -= OnEpisodeBegan;
+        _playerMover.NewHeightReached -= OnNewHeightReached;
+    }
+
+    private void OnEpisodeBegan()
+    {
+        Vector3 position = transform.position;
+        position.y = 0f;
+        transform.position = position;
+    }
 
     private void OnNewHeightReached(float newHeight, bool usingBooster)
     {

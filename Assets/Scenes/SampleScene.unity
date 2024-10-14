@@ -866,6 +866,7 @@ MonoBehaviour:
   _monsterGenerator: {fileID: 1767775509}
   _boosterGenerator: {fileID: 1767775508}
   _staticBoosterGenerator: {fileID: 1767775512}
+  _playerMover: {fileID: 2007441224}
 --- !u!114 &1767775512
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -888,6 +889,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -8429920006234170566, guid: e9be103f2c3befc4e8e703327c94cfae, type: 3}
+      propertyPath: _loseDuration
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2193142091735979570, guid: e9be103f2c3befc4e8e703327c94cfae, type: 3}
       propertyPath: m_Name
       value: Doodler

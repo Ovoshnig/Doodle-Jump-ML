@@ -256,7 +256,9 @@ GameObject:
   - component: {fileID: 1046682981315421826}
   - component: {fileID: 6727217633472968736}
   - component: {fileID: 4946911657120307609}
+  - component: {fileID: 199165928686361423}
   - component: {fileID: -8429920006234170566}
+  - component: {fileID: 780403145412539294}
   - component: {fileID: 1241600982181581526}
   - component: {fileID: 4854572935135823801}
   m_Layer: 6
@@ -363,7 +365,7 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 1
   m_SleepingMode: 1
-  m_CollisionDetection: 1
+  m_CollisionDetection: 0
   m_Constraints: 4
 --- !u!61 &6727217633472968736
 BoxCollider2D:
@@ -399,7 +401,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.014179677, y: 0.059376955}
+  m_Offset: {x: 0.014179677, y: 0.073920995}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.65789473, y: 0.47297296}
@@ -409,7 +411,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.97516626, y: 1.441246}
+  m_Size: {x: 0.97516626, y: 1.412158}
   m_EdgeRadius: 0
 --- !u!82 &4946911657120307609
 AudioSource:
@@ -508,6 +510,36 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &199165928686361423
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2193142091735979570}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d1c4e0b1822b495aa52bc52839ecb30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_BrainParameters:
+    VectorObservationSize: 4
+    NumStackedVectorObservations: 1
+    m_ActionSpec:
+      m_NumContinuousActions: 0
+      BranchSizes: 03000000
+    VectorActionSize: 03000000
+    VectorActionDescriptions: []
+    VectorActionSpaceType: 0
+    hasUpgradedBrainParametersWithActionSpec: 1
+  m_Model: {fileID: 0}
+  m_InferenceDevice: 0
+  m_BehaviorType: 0
+  m_BehaviorName: My Behavior
+  TeamId: 0
+  m_UseChildSensors: 1
+  m_UseChildActuators: 1
+  m_ObservableAttributeHandling: 0
 --- !u!114 &-8429920006234170566
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -520,12 +552,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e808b2393a36a7547b61cf67fc2bf393, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  agentParameters:
+    maxStep: 0
+  hasUpgradedFromAgentParameters: 1
+  MaxStep: 100000
   _platformJumpForce: 7.4
   _monsterJumpForce: 8.5
   _springJumpForce: 15
-  _horizontalSpeed: 4.8
+  _horizontalSpeed: 3.5
+  _loseDuration: 0
   _normalSprite: {fileID: -6721728136321296765, guid: 6ea839368826a6146a1e487f7c90f93e, type: 3}
   _legsTuckedSprite: {fileID: 1984921996, guid: 6ea839368826a6146a1e487f7c90f93e, type: 3}
+--- !u!114 &780403145412539294
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2193142091735979570}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a5c9d521e5ef4759a8246a07d52221e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DecisionPeriod: 1
+  TakeActionsBetweenDecisions: 1
 --- !u!114 &1241600982181581526
 MonoBehaviour:
   m_ObjectHideFlags: 0

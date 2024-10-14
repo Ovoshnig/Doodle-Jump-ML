@@ -93,18 +93,20 @@ public class PlatformGenerator : GeneratorBase
             _staticBoosterGenerator.PlaceStaticBoosterAboutPlatform(platform);
     }
 
-    public Vector2 SpawnNormalPlatform(float height)
+    public Vector2 SpawnNormalPlatform(ref float height)
     {
         GameObject platform = _normalPlatformPool.Get();
         Vector2 position = new(GetRandomPositionX(_normalPlatformPrefab), height);
         platform.transform.position = position;
         ActiveObjects[platform] = _normalPlatformPool;
 
+        height += Random.Range(ObjectHalfSizesY[platform.name], 12f * ObjectHalfSizesY[platform.name]);
+
         return position;
     }
 
     public void PlacePlayerAboveFirstPlatform(Vector2 platformPosition) =>
-        _player.transform.position = platformPosition + Vector2.up * 0.6f;
+        _player.transform.position = platformPosition + Vector2.up;
 
     protected Vector2 GetRandomPosition(GameObject @object, float height) => new(GetRandomPositionX(@object), height);
 

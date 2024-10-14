@@ -30,19 +30,33 @@ public abstract class GeneratorBase : MonoBehaviour
             Vector2 topViewportPosition = Camera.WorldToViewportPoint(topPosition);
 
             if (topViewportPosition.y < 0f || !activeObject.activeSelf)
-            {
-                if (ActiveObjects.TryGetValue(activeObject, out IObjectPool<GameObject> pool))
-                {
-                    activeObject.transform.SetParent(GroupTransform);
-                    pool.Release(activeObject);
-                }
-                else
-                {
-                    Debug.LogError($"Unable to find object {activeObject} in active objects");
-                }
-
-                ActiveObjects.Remove(activeObject);
-            }
+                ReleaseActiveElement(activeObject);
         }
+    }
+
+    public void ReleaseAllActiveElements()
+    {
+        GameObject[] keys = ActiveObjects.Keys.ToArray();
+
+        for (int i = 0; i < keys.Length; i++)
+        {
+            GameObject activeObject = keys[i];
+            ReleaseActiveElement(activeObject);
+        }
+    }
+
+    private void ReleaseActiveElement(GameObject activeObject)
+    {
+        if (ActiveObjects.TryGetValue(activeObject, out IObjectPool<GameObject> pool))
+        {
+            activeObject.transform.SetParent(GroupTransform);
+            pool.Release(activeObject);
+        }
+        else
+        {
+            Debug.LogError($"Unable to find object {activeObject} in active objects");
+        }
+
+        ActiveObjects.Remove(activeObject);
     }
 }

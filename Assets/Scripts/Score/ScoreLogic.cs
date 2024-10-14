@@ -13,9 +13,23 @@ public class ScoreLogic : MonoBehaviour
 
     public event Action<int> ScoreUpdated;
 
-    private void OnEnable() => _playerMover.NewHeightReached += OnNewHeightReached;
+    private void OnEnable()
+    {
+        _playerMover.EpisodeBegan += OnEpisodeBegan;
+        _playerMover.NewHeightReached += OnNewHeightReached;
+    }
 
-    private void OnDisable() => _playerMover.NewHeightReached -= OnNewHeightReached;
+    private void OnDisable()
+    {
+        _playerMover.EpisodeBegan -= OnEpisodeBegan;
+        _playerMover.NewHeightReached -= OnNewHeightReached;
+    }
+
+    private void OnEpisodeBegan()
+    {
+        _score = 0f;
+        ScoreUpdated?.Invoke((int)_score);
+    }
 
     private void OnNewHeightReached(float newHeight, bool usingBooster)
     {
@@ -27,7 +41,7 @@ public class ScoreLogic : MonoBehaviour
         if (usingBooster)
         {
             _score = targetScore;
-            ScoreUpdated?.Invoke((int)targetScore);
+            ScoreUpdated?.Invoke((int)_score);
         }
         else
         {
