@@ -80,7 +80,7 @@ public class PlatformGenerator : GeneratorBase
         if (pool == _breakablePlatformPool)
             height += Random.Range(ObjectHalfSizesY[platform.name], 3f * ObjectHalfSizesY[platform.name]);
         else
-            height += Random.Range(ObjectHalfSizesY[platform.name], 10f * ObjectHalfSizesY[platform.name]);
+            height += Random.Range(ObjectHalfSizesY[platform.name], 12f * ObjectHalfSizesY[platform.name]);
 
         if (pool != _normalPlatformPool && pool != _movingPlatformPool)
             return;

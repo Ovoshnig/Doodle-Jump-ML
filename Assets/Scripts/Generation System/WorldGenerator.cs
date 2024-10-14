@@ -56,8 +56,6 @@ public class WorldGenerator : MonoBehaviour
     {
         foreach (var generator in _generators)
             generator.Generate(ref _currentHeight);
-
-        //_currentHeight += Random.Range(_generationSettings.MinimalSpacing, _generationSettings.MaximumSpacing);
     }
 
     private void RemoveOffScreenElements()
