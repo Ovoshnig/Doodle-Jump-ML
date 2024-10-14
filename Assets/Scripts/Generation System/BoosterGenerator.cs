@@ -40,7 +40,7 @@ public class BoosterGenerator : GeneratorBase
         }
     }
 
-    public override void Generate(float height)
+    public override void Generate(ref float height)
     {
         _lastActiveObject = null;
 
@@ -58,14 +58,14 @@ public class BoosterGenerator : GeneratorBase
             return;
 
         GameObject booster = pool.Get();
-        ActiveObjects[booster] = pool;
         _lastActiveObject = booster;
+        ActiveObjects[booster] = pool;
     }
 
     public void PlaceBoosterAboutPlatform(GameObject platform)
     {
         Vector2 platformPosition = platform.transform.position;
-        Generate(platformPosition.y);
+        Generate(ref platformPosition.y);
         GameObject booster = _lastActiveObject;
 
         if (booster == null)

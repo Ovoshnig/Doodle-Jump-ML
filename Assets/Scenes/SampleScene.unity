@@ -845,6 +845,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _normalPlatformPrefab: {fileID: 7379949347888599131, guid: e848e3c1ec2695e459b2f104b52cbd65, type: 3}
+  _breakablePlatformPrefab: {fileID: 4160828150609703884, guid: 6922d4ee846a54547933b31f6498630f, type: 3}
   _movingPlatformPrefab: {fileID: 2359159135642176328, guid: dcfd582fd66e2cb4ea128f32c42a9d39, type: 3}
   _disappearingPlatformPrefab: {fileID: 3082521342782098209, guid: e40dc16c10c26e646953295b49a7ef26, type: 3}
   _player: {fileID: 2007441223}

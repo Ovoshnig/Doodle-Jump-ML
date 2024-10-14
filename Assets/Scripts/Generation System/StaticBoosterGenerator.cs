@@ -35,7 +35,7 @@ public class StaticBoosterGenerator : GeneratorBase
         }
     }
 
-    public override void Generate(float height)
+    public override void Generate(ref float height)
     {
         _lastActiveObject = null;
         float random = Random.Range(0f, 1f);
@@ -44,14 +44,15 @@ public class StaticBoosterGenerator : GeneratorBase
             return;
 
         GameObject spring = _springPool.Get();
-        ActiveObjects[spring] = _springPool;
+        height += ObjectHalfSizesY[spring.name];
         _lastActiveObject = spring;
+        ActiveObjects[spring] = _springPool;
     }
 
     public void PlaceStaticBoosterAboutPlatform(GameObject platform)
     {
         Vector2 platformPosition = platform.transform.position;
-        Generate(platformPosition.y);
+        Generate(ref platformPosition.y);
         GameObject spring = _lastActiveObject;
 
         if (spring == null)

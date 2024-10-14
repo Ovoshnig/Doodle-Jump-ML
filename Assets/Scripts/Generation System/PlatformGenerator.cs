@@ -5,6 +5,7 @@ using UnityEngine.Pool;
 public class PlatformGenerator : GeneratorBase
 {
     [SerializeField] private GameObject _normalPlatformPrefab;
+    [SerializeField] private GameObject _breakablePlatformPrefab;
     [SerializeField] private GameObject _movingPlatformPrefab;
     [SerializeField] private GameObject _disappearingPlatformPrefab;
     [SerializeField] private GameObject _player;
@@ -12,6 +13,7 @@ public class PlatformGenerator : GeneratorBase
     private BoosterGenerator _boosterGenerator;
     private StaticBoosterGenerator _staticBoosterGenerator;
     private IObjectPool<GameObject> _normalPlatformPool;
+    private IObjectPool<GameObject> _breakablePlatformPool;
     private IObjectPool<GameObject> _movingPlatformPool;
     private IObjectPool<GameObject> _disappearingPlatformPool;
 
@@ -23,12 +25,14 @@ public class PlatformGenerator : GeneratorBase
 
         GroupTransform = new GameObject("Platforms").transform;
         _normalPlatformPool = CreatePool(_normalPlatformPrefab, GroupTransform);
+        _breakablePlatformPool = CreatePool(_breakablePlatformPrefab, GroupTransform);
         _movingPlatformPool = CreatePool(_movingPlatformPrefab, GroupTransform);
         _disappearingPlatformPool = CreatePool(_disappearingPlatformPrefab, GroupTransform);
 
         List<GameObject> objects = new()
         {
             _normalPlatformPrefab,
+            _breakablePlatformPrefab,
             _movingPlatformPrefab,
             _disappearingPlatformPrefab
         };
@@ -50,14 +54,17 @@ public class PlatformGenerator : GeneratorBase
     public void SetStaticBoosterGenerator(StaticBoosterGenerator generator) => 
         _staticBoosterGenerator = generator;
 
-    public override void Generate(float height)
+    public override void Generate(ref float height)
     {
         IObjectPool<GameObject> pool;
         float random = Random.Range(0f, 1f);
 
         if (random < Settings.NormalPlatformFrequency)
             pool = _normalPlatformPool;
-        else if (random < Settings.NormalPlatformFrequency + Settings.MovingPlatformFrequency && height > Settings.MovingPlatformMinHeight)
+        else if (random < Settings.NormalPlatformFrequency + Settings.BreakablePlatformFrequency)
+            pool = _breakablePlatformPool;
+        else if (random < Settings.NormalPlatformFrequency + Settings.BreakablePlatformFrequency + Settings.MovingPlatformFrequency
+            && height > Settings.MovingPlatformMinHeight)
             pool = _movingPlatformPool;
         else if (height > Settings.DisappearingPlatformMinHeight)
             pool = _disappearingPlatformPool;
@@ -65,9 +72,15 @@ public class PlatformGenerator : GeneratorBase
             pool = _normalPlatformPool;
 
         GameObject platform = pool.Get();
-        ActiveObjects[platform] = pool;
-        Vector2 platformPosition = GetRandomPosition(platform, height);
+        height += ObjectHalfSizesY[platform.name];
+        Vector2 platformPosition = GetRandomPosition(platform, height + ObjectHalfSizesY[platform.name]);
         platform.transform.position = platformPosition;
+        ActiveObjects[platform] = pool;
+
+        if (pool == _breakablePlatformPool)
+            height += Random.Range(ObjectHalfSizesY[platform.name], 3f * ObjectHalfSizesY[platform.name]);
+        else
+            height += Random.Range(ObjectHalfSizesY[platform.name], 10f * ObjectHalfSizesY[platform.name]);
 
         if (pool != _normalPlatformPool && pool != _movingPlatformPool)
             return;

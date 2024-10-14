@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: GenerationSettings
   m_EditorClassIdentifier: 
   <MinimalSpacing>k__BackingField: 0.2
-  <MaximumSpacing>k__BackingField: 2.6
-  <NormalPlatformFrequency>k__BackingField: 0.7
+  <MaximumSpacing>k__BackingField: 1.5
+  <NormalPlatformFrequency>k__BackingField: 0.5
+  <BreakablePlatformFrequency>k__BackingField: 0.2
   <MovingPlatformFrequency>k__BackingField: 0.2
   <DisappearingPlatformFrequency>k__BackingField: 0.1
   <MovingPlatformMinHeight>k__BackingField: 40

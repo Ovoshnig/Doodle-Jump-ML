@@ -52,7 +52,7 @@ public class MonsterGenerator : GeneratorBase
         }
     }
 
-    public override void Generate(float height)
+    public override void Generate(ref float height)
     {
         if (ActiveObjects.Count > 0)
             return;
@@ -72,10 +72,12 @@ public class MonsterGenerator : GeneratorBase
             return;
 
         GameObject monster = pool.Get();
-        ActiveObjects[monster] = pool;
+        height += ObjectHalfSizesY[monster.name];
         monster.transform.position = GetRandomPosition(monster, height);
+        ActiveObjects[monster] = pool;
+        height += Random.Range(ObjectHalfSizesY[monster.name], 2f * ObjectHalfSizesY[monster.name]);
     }
-
+        
     private Vector2 GetRandomPosition(GameObject @object, float height)
     {
         float boundX = ObjectBoundsX[@object.name];

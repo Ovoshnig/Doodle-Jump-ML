@@ -8,7 +8,8 @@ public class GenerationSettings : ScriptableObject
     [field: SerializeField] public float MaximumSpacing { get; private set; } = 2.6f;
 
     [Header("Platform Settings")]
-    [field: SerializeField] public float NormalPlatformFrequency { get; private set; } = 0.7f;
+    [field: SerializeField] public float NormalPlatformFrequency { get; private set; } = 0.5f;
+    [field: SerializeField] public float BreakablePlatformFrequency { get; private set; } = 0.2f;
     [field: SerializeField] public float MovingPlatformFrequency { get; private set; } = 0.2f;
     [field: SerializeField] public float DisappearingPlatformFrequency { get; private set; } = 0.1f;
     [field: SerializeField] public float MovingPlatformMinHeight { get; private set; } = 20f;

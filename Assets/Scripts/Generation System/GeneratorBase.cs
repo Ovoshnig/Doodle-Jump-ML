@@ -16,7 +16,7 @@ public abstract class GeneratorBase : MonoBehaviour
 
     public void SetSettings(GenerationSettings settings) => Settings = settings;
 
-    public abstract void Generate(float height);
+    public abstract void Generate(ref float height);
 
     public void RemoveOffScreenElements()
     {
