@@ -1,7 +1,6 @@
 using UnityEngine;
 
 [RequireComponent(typeof(SpriteRenderer))]
-[RequireComponent(typeof(Collider2D))]
 [RequireComponent(typeof(AudioSource))]
 public class DisappearingPlatform : Platform
 {
@@ -26,18 +25,20 @@ public class DisappearingPlatform : Platform
 
     protected override void OnCollisionEnter2D(Collision2D collision)
     {
+        ContactPoint2D contact = collision.contacts[0];
+        Vector2 collisionNormal = contact.normal;
+
         if (collision.collider.TryGetComponent<PlayerMover>(out _))
         {
-            if (collision.gameObject.TryGetComponent(out Rigidbody2D rigidbody)
-                && rigidbody.linearVelocityY <= 0f)
+            if (collisionNormal.y < -0.5f)
             {
                 _audioSource.PlayOneShot(_disableClip);
-                StartCoroutine(ReleaseAfterSound());
+                StartCoroutine(DisableAfterSound());
             }
         }
     }
 
-    private System.Collections.IEnumerator ReleaseAfterSound()
+    private System.Collections.IEnumerator DisableAfterSound()
     {
         _spriteRenderer.enabled = false;
         _collider.enabled = false;
