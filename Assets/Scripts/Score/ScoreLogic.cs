@@ -27,13 +27,16 @@ public class ScoreLogic : MonoBehaviour
 
     private void OnEpisodeBegan()
     {
+        if (_scoreCoroutine != null)
+            StopCoroutine(_scoreCoroutine);
+
         _score = 0f;
         ScoreUpdated?.Invoke((int)_score);
     }
 
     private void OnNewHeightReached(float newHeight, bool usingBooster)
     {
-        float targetScore = newHeight * _multiplier;
+        float targetScore = _multiplier * newHeight;
 
         if (_scoreCoroutine != null)
             StopCoroutine(_scoreCoroutine);

@@ -26,6 +26,9 @@ public class CameraMover : MonoBehaviour
 
     private void OnEpisodeBegan()
     {
+        if (_cameraCoroutine != null)
+            StopCoroutine(_cameraCoroutine);
+
         Vector3 position = transform.position;
         position.y = 0f;
         transform.position = position;
@@ -40,8 +43,9 @@ public class CameraMover : MonoBehaviour
         if (_cameraCoroutine != null)
             StopCoroutine(_cameraCoroutine);
 
-        if (usingBooster && position.y < targetPosition.y)
+        if (usingBooster)
         {
+            targetPosition.y = Mathf.Max(position.y, targetPosition.y);
             transform.position = targetPosition;
         }
         else

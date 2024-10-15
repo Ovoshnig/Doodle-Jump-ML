@@ -148,6 +148,7 @@ public class PlayerMover : Agent
 
     private void Jump(float height, float force = 1f)
     {
+        _rigidbody.linearVelocityY = 0f;
         _rigidbody.AddForceY(force, ForceMode2D.Impulse);
 
         if (height > _maxReachedHeight)
