@@ -14,9 +14,9 @@ GameObject:
   - component: {fileID: 38024021417243117}
   - component: {fileID: 3505570375577800129}
   - component: {fileID: 4219859104291175938}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: Disappearing Platform
-  m_TagString: Untagged
+  m_TagString: Disappearing platform
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

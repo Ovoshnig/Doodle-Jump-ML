@@ -14,9 +14,9 @@ GameObject:
   - component: {fileID: -6484474813001695761}
   - component: {fileID: 4528565520766972129}
   - component: {fileID: 40345853006099348}
-  m_Layer: 8
+  m_Layer: 9
   m_Name: Flying Monster 2
-  m_TagString: Untagged
+  m_TagString: Flying monster
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

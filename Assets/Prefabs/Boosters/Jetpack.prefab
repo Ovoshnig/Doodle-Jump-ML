@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7887629704483559342}
   - component: {fileID: 7119853744148462293}
   - component: {fileID: 2807895079417820261}
-  m_Layer: 10
+  m_Layer: 7
   m_Name: Jetpack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -103,7 +103,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8182572057829023910}
   - component: {fileID: 7350520397938525836}
-  m_Layer: 10
+  m_Layer: 7
   m_Name: Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -190,7 +190,7 @@ GameObject:
   m_Component:
   - component: {fileID: 904428412330286114}
   - component: {fileID: 2300044923237159955}
-  m_Layer: 10
+  m_Layer: 7
   m_Name: Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}

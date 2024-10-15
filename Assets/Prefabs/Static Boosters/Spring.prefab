@@ -14,9 +14,9 @@ GameObject:
   - component: {fileID: 6426522459558331769}
   - component: {fileID: 2362049117980266869}
   - component: {fileID: 1622250221684170054}
-  m_Layer: 11
+  m_Layer: 8
   m_Name: Spring
-  m_TagString: Untagged
+  m_TagString: Spring
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

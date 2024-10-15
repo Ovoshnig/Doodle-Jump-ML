@@ -100,9 +100,7 @@ public class PlayerMover : Agent
 
     public override void CollectObservations(VectorSensor sensor)
     {
-        Vector2 position = transform.position;
-
-        sensor.AddObservation(position);
+        sensor.AddObservation(transform.position);
         sensor.AddObservation(_rigidbody.linearVelocity);
     }
 

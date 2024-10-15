@@ -4,21 +4,29 @@
 TagManager:
   serializedVersion: 3
   tags:
-  - Platform
-  - Monster
+  - Normal platform
+  - Moving platform
+  - Disappearing platform
+  - Breakable platform
+  - Propeller
+  - Jetpack
+  - Spring
+  - Flying monster
+  - Walking monster
+  - Hole
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Platform
+  - Player
   - Water
   - UI
-  - PlayerLegs
-  - PlayerBody
-  - Monster
-  - Hole
+  - Platform
   - Booster
   - StaticBooster
+  - Monster
+  - 
+  - 
   - 
   - 
   - 

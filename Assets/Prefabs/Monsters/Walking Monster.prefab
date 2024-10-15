@@ -14,9 +14,9 @@ GameObject:
   - component: {fileID: 422430420018328691}
   - component: {fileID: 6730015060227628670}
   - component: {fileID: 2804456062580306988}
-  m_Layer: 8
+  m_Layer: 9
   m_Name: Walking Monster
-  m_TagString: Untagged
+  m_TagString: Walking monster
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
