@@ -100,7 +100,9 @@ public class PlayerMover : Agent
 
     public override void CollectObservations(VectorSensor sensor)
     {
-        sensor.AddObservation(transform.position);
+        Vector2 position = transform.position;
+
+        sensor.AddObservation(position);
         sensor.AddObservation(_rigidbody.linearVelocity);
     }
 
@@ -116,6 +118,8 @@ public class PlayerMover : Agent
             scale.x = Mathf.Abs(scale.x);
 
         transform.localScale = scale;
+
+        AddReward(-0.002f);
     }
 
     public override void Heuristic(in ActionBuffers actionsOut)
@@ -132,12 +136,14 @@ public class PlayerMover : Agent
     {
         _rigidbody.linearVelocityY = 0f;
         _collider.enabled = false;
+        AddReward(-0.5f);
     }
 
     private void OnFlewIntoHole()
     {
         _rigidbody.linearVelocityY = 0f;
         _collider.enabled = false;
+        AddReward(-0.5f);
     }
 
     private void OnBoosterUsed(Booster booster) => Boost(booster);
@@ -151,8 +157,9 @@ public class PlayerMover : Agent
 
         if (height > _maxReachedHeight)
         {
+            AddReward(0.01f * (height - _maxReachedHeight));
             _maxReachedHeight = height;
-            NewHeightReached?.Invoke(_maxReachedHeight, false);
+            NewHeightReached?.Invoke(height, false);
         }
     }
 
@@ -163,6 +170,7 @@ public class PlayerMover : Agent
 
         _collider.enabled = false;
         _isLost = true;
+        AddReward(-1f);
         Lost?.Invoke();
         StartCoroutine(WaitLoseDuration());
     }
@@ -190,7 +198,10 @@ public class PlayerMover : Agent
 
         while (playerBooster.IsRunning)
         {
-            NewHeightReached(transform.position.y, true);
+            float height = transform.position.y;
+            AddReward(0.01f * (height - _maxReachedHeight));
+            _maxReachedHeight = height;
+            NewHeightReached(height, true);
 
             yield return null;
         }
@@ -212,9 +223,10 @@ public class PlayerMover : Agent
 
         while (_rigidbody.linearVelocityY >= 0)
         {
-            float positionY = transform.position.y;
-            _maxReachedHeight = positionY;
-            NewHeightReached(positionY, true);
+            float height = transform.position.y;
+            AddReward(0.01f * (height - _maxReachedHeight));
+            _maxReachedHeight = height;
+            NewHeightReached(height, true);
 
             yield return null;
         }

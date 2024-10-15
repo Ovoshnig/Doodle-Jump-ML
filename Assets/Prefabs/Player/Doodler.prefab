@@ -381,7 +381,7 @@ BoxCollider2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 8
+    m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -536,7 +536,7 @@ MonoBehaviour:
   m_Model: {fileID: 0}
   m_InferenceDevice: 0
   m_BehaviorType: 0
-  m_BehaviorName: My Behavior
+  m_BehaviorName: Jumping
   TeamId: 0
   m_UseChildSensors: 1
   m_UseChildActuators: 1
@@ -568,7 +568,7 @@ MonoBehaviour:
   m_RaysPerDirection: 10
   m_MaxRayDegrees: 180
   m_SphereCastRadius: 0.2
-  m_RayLength: 14
+  m_RayLength: 10
   m_RayLayerMask:
     serializedVersion: 2
     m_Bits: 4294967232
