@@ -66,10 +66,10 @@ public class WorldGenerator : MonoBehaviour
     private void RemoveOffScreenElements()
     {
         foreach(var generator in _generators)
-            generator.RemoveOffScreenElements();
+            generator.ReleaseOffScreenElements();
 
-        _boosterGenerator.RemoveOffScreenElements();
-        _staticBoosterGenerator.RemoveOffScreenElements();
+        _boosterGenerator.ReleaseOffScreenElements();
+        _staticBoosterGenerator.ReleaseOffScreenElements();
     }
 
     private bool IsInCameraView(float height) => height < _camera.transform.position.y + 2f * _camera.orthographicSize;

@@ -18,7 +18,7 @@ public abstract class GeneratorBase : MonoBehaviour
 
     public abstract void Generate(ref float height);
 
-    public void RemoveOffScreenElements()
+    public void ReleaseOffScreenElements()
     {
         GameObject[] keys = ActiveObjects.Keys.ToArray();
 
