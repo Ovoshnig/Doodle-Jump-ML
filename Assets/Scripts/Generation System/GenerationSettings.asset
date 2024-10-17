@@ -12,21 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dccbea85acb7cf4bbae711bfbf6fee1, type: 3}
   m_Name: GenerationSettings
   m_EditorClassIdentifier: 
-  <MinimalSpacing>k__BackingField: 0.2
-  <MaximumSpacing>k__BackingField: 1.5
-  <NormalPlatformFrequency>k__BackingField: 0.5
-  <BreakablePlatformFrequency>k__BackingField: 0.2
-  <MovingPlatformFrequency>k__BackingField: 0.2
-  <DisappearingPlatformFrequency>k__BackingField: 0.1
-  <MovingPlatformMinHeight>k__BackingField: 40
-  <DisappearingPlatformMinHeight>k__BackingField: 150
-  <PropellerFrequency>k__BackingField: 0.01
-  <JetpackFrequency>k__BackingField: 0.008
-  <BoosterMinHeight>k__BackingField: 50
-  <SpringFrequency>k__BackingField: 0.05
-  <FlyingMonsterFrequency>k__BackingField: 0.01
-  <WalkingMonsterFrequency>k__BackingField: 0.01
-  <HoleFrequency>k__BackingField: 0.005
-  <FlyingMonsterMinHeight>k__BackingField: 100
-  <WalkingMonsterMinHeight>k__BackingField: 150
-  <HoleMinHeight>k__BackingField: 200
+  _minimalSpacing: 0.3
+  _maximumSpacing: 2.6
+  _normalPlatformFrequency: 0.5
+  _breakablePlatformFrequency: 0.2
+  _movingPlatformFrequency: 0.2
+  _disappearingPlatformFrequency: 0.1
+  _movingPlatformMinHeight: 30
+  _disappearingPlatformMinHeight: 150
+  _propellerFrequency: 0.11
+  _jetpackFrequency: 0.108
+  _boosterMinHeight: 0
+  _springFrequency: 0.05
+  _flyingMonsterFrequency: 0.01
+  _walkingMonsterFrequency: 0.005
+  _holeFrequency: 0.005
+  _flyingMonsterMinHeight: 50
+  _walkingMonsterMinHeight: 100
+  _holeMinHeight: 150

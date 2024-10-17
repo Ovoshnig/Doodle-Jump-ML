@@ -12,8 +12,9 @@ GameObject:
   - component: {fileID: 2554642976995665166}
   - component: {fileID: 3846454920594482768}
   - component: {fileID: 5180205631468660069}
-  - component: {fileID: 4345045827851693539}
   - component: {fileID: 2894702265262743197}
+  - component: {fileID: 3288410197693635309}
+  - component: {fileID: 4726182953703346816}
   m_Layer: 0
   m_Name: Propeller
   m_TagString: Untagged
@@ -43,7 +44,7 @@ SpriteRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1471835529371386832}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -85,7 +86,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.63, y: 0.51}
+  m_Size: {x: 0.62, y: 0.54}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -210,18 +211,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &4345045827851693539
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1471835529371386832}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: feb10e83950185e4ca115a155d1dddf6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &2894702265262743197
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -231,18 +220,42 @@ MonoBehaviour:
   m_GameObject: {fileID: 1471835529371386832}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 555143e5ff387d44790a9365fbbd9a66, type: 3}
+  m_Script: {fileID: 11500000, guid: b917914c24bb1a24da9d4df4e64c9b88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _distance: 50
+  _duration: 3.05
+  _decelerationDuration: 0.5
+  _playerTransform: {fileID: 2679159531476124905}
+--- !u!114 &3288410197693635309
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1471835529371386832}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b363e3c8ce7c31e49b026a59ef4cd318, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4726182953703346816
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1471835529371386832}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37e2f876704bf8549a05e987b9b31ecb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   _clips:
-  - {fileID: 8300000, guid: 0dc590a440a42c242927f19084be65a8, type: 3}
   - {fileID: 8300000, guid: f0699683f031a8841ad4aea3ce29acc3, type: 3}
   - {fileID: 8300000, guid: d075332676c777b4097696fc15d452e3, type: 3}
   - {fileID: 8300000, guid: 42c3c2dc991bf494191cbcab40176a73, type: 3}
   - {fileID: 8300000, guid: d290fc6a752d27f4ea0368cc0a28a466, type: 3}
-  _playerTransform: {fileID: 2679159531476124905}
-  _playerRigidbody: {fileID: 1046682981315421826}
 --- !u!1 &2193142091735979570
 GameObject:
   m_ObjectHideFlags: 0
@@ -598,6 +611,8 @@ MonoBehaviour:
   _loseDuration: 0
   _normalSprite: {fileID: -6721728136321296765, guid: 6ea839368826a6146a1e487f7c90f93e, type: 3}
   _legsTuckedSprite: {fileID: 1984921996, guid: 6ea839368826a6146a1e487f7c90f93e, type: 3}
+  _propellerLogic: {fileID: 2894702265262743197}
+  _jetpackLogic: {fileID: 7186168808579845046}
 --- !u!114 &780403145412539294
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -653,8 +668,9 @@ GameObject:
   - component: {fileID: 9100051605523253867}
   - component: {fileID: 9182915516071539242}
   - component: {fileID: 957981277989326661}
-  - component: {fileID: 6725752348983663144}
   - component: {fileID: 7186168808579845046}
+  - component: {fileID: 1827052487312741690}
+  - component: {fileID: 7752591578634017175}
   m_Layer: 0
   m_Name: Jetpack
   m_TagString: Untagged
@@ -684,7 +700,7 @@ SpriteRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8777065651306980794}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -851,18 +867,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &6725752348983663144
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8777065651306980794}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bf7586cebd1c9f74b8d41d8ac1abf5f6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &7186168808579845046
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -872,15 +876,40 @@ MonoBehaviour:
   m_GameObject: {fileID: 8777065651306980794}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 95f61b4a03ae2a74cacd1b5ced33b14c, type: 3}
+  m_Script: {fileID: 11500000, guid: b917914c24bb1a24da9d4df4e64c9b88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _distance: 75
+  _distance: 50
+  _duration: 2.23
+  _decelerationDuration: 0.5
+  _playerTransform: {fileID: 2679159531476124905}
+--- !u!114 &1827052487312741690
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8777065651306980794}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b363e3c8ce7c31e49b026a59ef4cd318, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7752591578634017175
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8777065651306980794}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37e2f876704bf8549a05e987b9b31ecb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   _clips:
   - {fileID: 8300000, guid: 3738acd9fc83cde4dba394360289909b, type: 3}
   - {fileID: 8300000, guid: 265bccaef7c254647b32fa0385d27a52, type: 3}
   - {fileID: 8300000, guid: e7069e2897ce09d43b5d804ba4de9c1f, type: 3}
   - {fileID: 8300000, guid: 14e1c6d8f81d53046a4f1981aa0d547f, type: 3}
   - {fileID: 8300000, guid: e63447ea7abcbfe499f4b581d57c6916, type: 3}
-  _playerTransform: {fileID: 2679159531476124905}
-  _playerRigidbody: {fileID: 1046682981315421826}

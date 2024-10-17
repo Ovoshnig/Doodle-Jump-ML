@@ -20,15 +20,13 @@ public class PlayerMover : Agent
     [SerializeField, Min(0f)] private float _loseDuration = 0f;
     [SerializeField] private Sprite _normalSprite;
     [SerializeField] private Sprite _legsTuckedSprite;
+    [SerializeField] private BoosterLogic _propellerLogic;
+    [SerializeField] private BoosterLogic _jetpackLogic;
 
     private SpriteRenderer _spriteRenderer;
     private Collider2D _collider;
     private Rigidbody2D _rigidbody;
     private PlayerCollisionHandler _collisionHandler;
-    private PlayerPropeller _playerPropeller;
-    private PlayerJetpack _playerJetpack;
-    private PlayerPropellerView _playerPropellerView;
-    private PlayerJetpackView _playerJetpackView;
     private Camera _camera;
     private float _maxReachedHeight = 0f;
     private bool _isLost = false;
@@ -43,11 +41,6 @@ public class PlayerMover : Agent
         _collider = GetComponent<BoxCollider2D>();
         _rigidbody = GetComponent<Rigidbody2D>();
         _collisionHandler = GetComponent<PlayerCollisionHandler>();
-
-        _playerPropeller = GetComponentInChildren<PlayerPropeller>();
-        _playerJetpack = GetComponentInChildren<PlayerJetpack>();
-        _playerPropellerView = GetComponentInChildren<PlayerPropellerView>();
-        _playerJetpackView = GetComponentInChildren<PlayerJetpackView>();
 
         _camera = Camera.main;
 
@@ -185,18 +178,17 @@ public class PlayerMover : Agent
     private void Boost(Booster booster)
     {
         if (booster is Propeller)
-            StartCoroutine(BoostRoutine(_playerPropeller, _playerPropellerView));
+            StartCoroutine(BoostRoutine(_propellerLogic));
         else if (booster is Jetpack)
-            StartCoroutine(BoostRoutine(_playerJetpack, _playerJetpackView));
+            StartCoroutine(BoostRoutine(_jetpackLogic));
     }
 
-    private IEnumerator BoostRoutine(PlayerBooster playerBooster, PlayerBoosterView playerBoosterView)
+    private IEnumerator BoostRoutine(BoosterLogic boosterLogic)
     {
-        float duration = playerBooster.Run();
-        playerBoosterView.Enable(duration);
+        boosterLogic.Launch();
         _collider.enabled = false;
 
-        while (playerBooster.IsRunning)
+        while (boosterLogic.IsWorking)
         {
             float height = transform.position.y;
             AddReward(0.01f * (height - _maxReachedHeight));
@@ -206,8 +198,6 @@ public class PlayerMover : Agent
             yield return null;
         }
 
-        playerBoosterView.StopRunningAnimation();
-        Jump(transform.position.y, _platformJumpForce);
         _collider.enabled = true;
     }
 
