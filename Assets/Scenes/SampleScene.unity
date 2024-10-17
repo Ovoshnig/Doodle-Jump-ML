@@ -406,7 +406,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerMover: {fileID: 2007441224}
-  _cameraVerticalOffset: 2.5
+  _cameraVerticalOffset: 3
   _cameraMoveSpeed: 2.5
 --- !u!114 &519420034
 MonoBehaviour:

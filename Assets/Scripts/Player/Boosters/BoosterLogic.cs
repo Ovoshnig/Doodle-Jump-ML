@@ -50,4 +50,19 @@ public class BoosterLogic : MonoBehaviour
         _playerRigidbody.linearVelocityY = 0f;
         IsWorking = false;
     }
+
+    private void Detach()
+    {
+        Transform boosterHolderTransform = new GameObject("BoosterHolder").transform;
+        boosterHolderTransform.position = _playerTransform.position;
+        boosterHolderTransform.localScale = _playerTransform.localScale;
+        transform.SetParent(boosterHolderTransform, true);
+    }
+
+    private void Attach()
+    {
+        Transform tempObjectTransform = transform.parent;
+        transform.SetParent(_playerTransform, true);
+        Destroy(tempObjectTransform.gameObject);
+    }
 }
